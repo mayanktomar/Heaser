@@ -1,38 +1,81 @@
-.App {
+.navbar-dark {
+  background-color: #1976d2;
+}
+
+.card-title {
+  font-weight: bold;
   text-align: center;
+  font-size: 1.2rem;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* .card-text {
+  text-align: center;
+} */
+
+.row {
+  margin-bottom: 5%;
+}
+.col-md-12 {
+  margin-bottom: 5%;
+}
+.loginhead {
+  padding-top: 10%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.loginhead .btn-secondary {
+  display: inline-block;
+  border-color: #1976d2;
+  border-radius: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* .btn-secondary:hover {
+  background-color: black;
+} */
+
+.loginhead img {
+  width: 100%;
+  height: auto;
 }
 
-.App-link {
-  color: #61dafb;
+.orgdash {
+  padding-top: 5%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.orgdash h2 {
+  text-align: center;
+  font-weight: bold;
+}
+
+.orgdash {
+  /* background-image: url(assets/bg1.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+
+  height: 100%; */
+  /* height: 200px;
+  width: 75%; */
+  /* background-color: #9edaff; */
+}
+
+.empadd .row {
+  padding-top: 5%;
+}
+.empadd img {
+  width: 100%;
+  height: auto;
+}
+
+.empadd h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.empmain {
+  padding-top: 2%;
+}
+
+.empmain .timecard {
+  border: 1px solid #dc3545;
 }
