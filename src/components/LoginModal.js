@@ -48,12 +48,16 @@ export class LoginModal extends Component {
                 this.context.setData(result.data.user);
                 this.context.setToken(result.data.token);
                 this.context.setUserId(result.data.userId);
-                this.context.setType("Organization");
+                this.context.setType("organization");
                 localStorage.setItem("heaserToken", result.data.token);
                 localStorage.setItem("userId", result.data.userId);
-                localStorage.setItem("heaserType", "Organization");
+                localStorage.setItem("heaserType", "organization");
+                localStorage.setItem(
+                    "heaserData",
+                    JSON.stringify(result.data.user)
+                );
                 this.setState({ loader: false });
-                this.props.toggleLogModal();
+                this.props.toggleOrgModal();
                 this.props.history.push("/organization");
             })
             .catch((err) => {
@@ -63,44 +67,34 @@ export class LoginModal extends Component {
 
     render() {
         return (
-            <div>
-                <Modal
-                    isOpen={this.props.isLogModalOpen}
-                    toggle={this.props.toggleLogModal}
-                >
-                    <ModalHeader toggle={this.props.toggleLogModal}>
-                        Login
-                    </ModalHeader>
-                    <ModalBody>
-                        <Form>
-                            <FormGroup>
-                                <Label for="exampleEmail">
-                                    Organization Email
-                                </Label>
-                                <Input
-                                    type="email"
-                                    name="email"
-                                    id="exampleEmail"
-                                    placeholder="Enter your email"
-                                    onChange={this.handleLogChange}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="examplePassword">Password</Label>
-                                <Input
-                                    type="password"
-                                    name="password"
-                                    id="examplePassword"
-                                    placeholder="Enter your password"
-                                    onChange={this.handleLogChange}
-                                />
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button onClick={this.onLogSubmit}>Login</Button>
-                    </ModalFooter>
-                </Modal>
+            <div style={{ marginTop: 20 }}>
+                <Form>
+                    <FormGroup>
+                        <Label for="exampleEmail">Organization Email</Label>
+                        <Input
+                            type="email"
+                            name="email"
+                            id="exampleEmail"
+                            placeholder="Enter your email"
+                            onChange={this.handleLogChange}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="examplePassword">Password</Label>
+                        <Input
+                            type="password"
+                            name="password"
+                            id="examplePassword"
+                            placeholder="Enter your password"
+                            onChange={this.handleLogChange}
+                        />
+                    </FormGroup>
+                </Form>
+                <ModalFooter>
+                    <Button onClick={this.onLogSubmit}>
+                        {this.state.loader ? <Spinner /> : "Login"}{" "}
+                    </Button>
+                </ModalFooter>
             </div>
         );
     }

@@ -5,6 +5,7 @@ import AskLogin from "./Pages/AskLogin";
 import OrgDashboard from "./Pages/OrgDashboard";
 import PrivateRoute from "./PrivateRoutes";
 import { AuthContext } from "./Context/auth";
+import Chat from "./Pages/Chat/Chat";
 
 function App() {
     const [token, setToken] = useState(null);
@@ -22,9 +23,21 @@ function App() {
         setUserId(data);
     };
 
-    useEffect(() => {
-        getToken();
-        getUserId();
+    const getType = async () => {
+        let data = await localStorage.getItem("heaserType");
+        setType(data);
+    };
+
+    const getUserData = async () => {
+        let data = await localStorage.getItem("heaserData");
+        setData(JSON.parse(data));
+    };
+
+    useEffect(async () => {
+        await getToken();
+        await getUserId();
+        await getType();
+        await getUserData();
     }, []);
 
     return (
@@ -44,6 +57,7 @@ function App() {
                         }}
                     >
                         <Route exact path="/" component={AskLogin} />
+                        <PrivateRoute path="/workspace" component={Chat} />
                         <PrivateRoute
                             path="/organization"
                             component={OrgDashboard}

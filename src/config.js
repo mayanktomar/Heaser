@@ -1,1 +1,1 @@
-exports.apiUrl = 'https://heaser-backend.herokuapp.com/';
+exports.apiUrl = "https://heaser-backend.herokuapp.com/";

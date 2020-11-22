@@ -4,25 +4,26 @@ import vector1 from "../assets/vector1.svg";
 import RegisterModal from "../components/RegisterModal";
 import LoginModal from "../components/LoginModal";
 import Header from "../components/Header";
+import EmployeeLoginModal from "../components/EmployeeLogin";
 
 export class AskLogin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isRegModalOpen: false,
-            isLogModalOpen: false,
+            isOrgModalOpen: false,
+            isEmpModalOpen: false,
         };
     }
 
-    toggleRegModal = () => {
+    toggleOrgModal = () => {
         this.setState({
-            isRegModalOpen: !this.state.isRegModalOpen,
+            isOrgModalOpen: !this.state.isOrgModalOpen,
         });
     };
 
-    toggleLogModal = () => {
+    toggleEmpModal = () => {
         this.setState({
-            isLogModalOpen: !this.state.isLogModalOpen,
+            isEmpModalOpen: !this.state.isEmpModalOpen,
         });
     };
 
@@ -46,36 +47,22 @@ export class AskLogin extends Component {
                                     width: "75%",
                                     color: "white",
                                 }}
-                                onClick={this.toggleLogModal}
+                                onClick={this.toggleOrgModal}
                             >
-                                Organization(HR) Login
+                                Organization Login
                             </Button>
                             <br />
                             <br />
-                            {/* <div className="row">
-                            <div className="col-md-6">
 
-                            </div>
-                        </div> */}
-                            {/* <Row>
-                            <Col md={6}>
-                            <Button style={{backgroundColor:'#1976d2',width:'75%',color:'white'}} onClick={this.toggleRegModal}>HR Login</Button>
-
-                            </Col>
-                            <Col md={6}>
-                            <Button style={{backgroundColor:'#1976d2',width:'75%',color:'white'}} onClick={this.toggleRegModal}>HR Login</Button>
-
-                            </Col>
-                        </Row> */}
                             <Button
                                 style={{
                                     backgroundColor: "#1976d2",
                                     width: "75%",
                                     color: "white",
                                 }}
-                                onClick={this.toggleRegModal}
+                                onClick={this.toggleEmpModal}
                             >
-                                Organization(HR) Create
+                                Employee Login
                             </Button>
                         </div>
                         <div class="col-md-6" style={{ paddingBottom: 30 }}>
@@ -84,13 +71,14 @@ export class AskLogin extends Component {
                     </div>
                 </div>
                 <RegisterModal
-                    isRegModalOpen={this.state.isRegModalOpen}
-                    toggleRegModal={this.toggleRegModal}
-                />
-                <LoginModal
                     {...this.props}
-                    isLogModalOpen={this.state.isLogModalOpen}
-                    toggleLogModal={this.toggleLogModal}
+                    isOrgModalOpen={this.state.isOrgModalOpen}
+                    toggleOrgModal={this.toggleOrgModal}
+                />
+                <EmployeeLoginModal
+                    {...this.props}
+                    isEmpModalOpen={this.state.isEmpModalOpen}
+                    toggleEmpModal={this.toggleEmpModal}
                 />
             </div>
         );
