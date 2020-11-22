@@ -37,42 +37,37 @@ export class Header extends Component {
         });
     };
 
-    getEmployeeNotification = async () => {
-        let data = await localStorage.getItem("userId");
-        data = data === "null" ? JSON.parse(data) : data;
-
-        if (data) {
-            Axios.get(`/notification/get-employee-notification/${data}`).then(
-                (result) => {
-                    this.setState({
-                        data: result.data.data,
-                        count: result.data.data.length,
-                    });
-                }
-            );
-        }
-    };
-
-    getOrganizationNotification = async () => {
-        let data = await localStorage.getItem("userId");
-        data = data === "null" ? JSON.parse(data) : data;
-
-        if (data) {
-            Axios.get(
-                `/notification/get-organization-notification/${data}`
-            ).then((result) => {
+    getEmployeeNotification = async (userId) => {
+        Axios.get(`/notification/get-employee-notification/${userId}`).then(
+            (result) => {
                 this.setState({
                     data: result.data.data,
                     count: result.data.data.length,
                 });
-            });
-        }
+            }
+        );
+    };
+
+    getOrganizationNotification = async (userId) => {
+        Axios.get(`/notification/get-organization-notification/${userId}`).then(
+            (result) => {
+                this.setState({
+                    data: result.data.data,
+                    count: result.data.data.length,
+                });
+            }
+        );
     };
 
     async componentDidMount() {
         let data = await localStorage.getItem("heaserType");
-        if (data === "employee") this.getEmployeeNotification();
-        else this.getOrganizationNotification();
+        let userId = await localStorage.getItem("userId");
+        userId = userId === "null" ? JSON.parse(userId) : userId;
+        console.log(data, userId);
+        if (userId) {
+            if (data === "employee") this.getEmployeeNotification(userId);
+            else this.getOrganizationNotification(userId);
+        }
     }
 
     toggleNotModal = () => {
