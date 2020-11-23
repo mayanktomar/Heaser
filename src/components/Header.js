@@ -94,7 +94,9 @@ export class Header extends Component {
                             href={
                                 this.context.token !== null &&
                                 this.context.token !== "null"
-                                    ? "/organization"
+                                    ? this.context.type === "organization"
+                                        ? "/organization"
+                                        : "/task"
                                     : "/"
                             }
                             style={{ fontWeight: "bold" }}

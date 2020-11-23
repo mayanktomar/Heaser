@@ -14,6 +14,7 @@ import {
 import moment from "moment";
 import empannounce from "../assets/empannounce.svg";
 import Header from "../components/Header";
+import { useAuthContext } from "../Context/auth";
 
 export default function EmpAnnouncements(props) {
     const [list, setList] = useState([]);
@@ -22,12 +23,11 @@ export default function EmpAnnouncements(props) {
     const [desc, setDesc] = useState("");
     const [heading, setHeading] = useState("");
     const toggle = () => setModal(!modal);
+    const { userId, data } = useAuthContext();
 
     useEffect(() => {
         axios
-            .get(
-                "/announcement/get-announcements-by-org/5faf8c6860c04b0017a86356"
-            )
+            .get(`/announcement/get-announcements-by-org/${data.organization}`)
             .then(function (response) {
                 setList(response.data.data);
                 setLoading(false);
