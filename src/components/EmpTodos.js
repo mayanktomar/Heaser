@@ -84,23 +84,6 @@ export class EmpTodos extends Component {
         });
     };
 
-    // findProgress=()=>{
-    //        this.state.todos.map((t)=>{
-    //        console.log("Hleo")
-    //     if (t.from._id===t.to&&t.isCompleted==false&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-    //     {
-    //         this.setState({
-    //             todoslength:this.state.todoslength+1
-    //         })
-    //     }
-    //     if (t.from._id===t.to&&t.isCompleted==true&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-    //     {
-    //         this.setState({
-    //             todoscomp:this.state.todoscomp+1
-    //         })
-    //     }
-    //    })
-    // }
     toggleAllotModal = () => {
         this.setState({
             isAllotModalOpen: !this.state.isAllotModalOpen,
@@ -154,37 +137,7 @@ export class EmpTodos extends Component {
             .catch(function (error) {
                 alert("error");
             });
-
-        //   await axios.get('/task/get-employee-tasks/'+this.props.userId)
-        // .then( (response)=> {
-        //     this.setState({
-        //         todos:response.data.tasks,
-        //         loading:false
-        //     })
-
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        // });
-
-        // await this.state.todos.map((t)=>{
-        //     console.log("Hleo")
-        //  if (t.from._id===t.to&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-        //  {
-        //      this.setState({
-        //          todoslength:this.state.todoslength+1
-        //      })
-        //  }
-        //  if (t.from._id===t.to&&t.isCompleted==true&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-        //  {
-        //      this.setState({
-        //          todoscomp:this.state.todoscomp+1
-        //      })
-        //  }
-        // })
-        // this.findProgress();
         this.toggleAllotModal();
-        //   this.findProgress();
     };
 
     onDelete = async (event) => {
@@ -207,45 +160,10 @@ export class EmpTodos extends Component {
             .catch(function (error) {
                 alert("error");
             });
-
-        //   this.setState({
-        //       loading:true
-        //   })
-
-        //   await axios.get('/task/get-employee-tasks/'+this.props.userId)
-        //   .then( (response)=> {
-        //       this.setState({
-        //           todos:response.data.tasks,
-        //           loading:false
-        //       })
-
-        //   })
-        //   .catch(function (error) {
-        //       console.log(error);
-        //   });
-
-        //   await this.state.todos.map((t)=>{
-        //     console.log("Hleo")
-        //  if (t.from._id===t.to&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-        //  {
-        //      this.setState({
-        //          todoslength:this.state.todoslength+1
-        //      })
-        //  }
-        //  if (t.from._id===t.to&&t.isCompleted==true&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-        //  {
-        //      this.setState({
-        //          todoscomp:this.state.todoscomp+1
-        //      })
-        //  }
-        // })
-        //   this.findProgress();
     };
 
     render() {
         const displaytasks = this.state.todos.map((t) => {
-            // console.log(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD'))
-
             if (
                 t.from._id === t.to &&
                 t.isCompleted == false &&
@@ -266,7 +184,9 @@ export class EmpTodos extends Component {
                                 }}
                                 onClick={this.onDelete}
                             >
-                                <AiOutlineCheckCircle />
+                                <AiOutlineCheckCircle
+                                    style={{ color: "green", paddingTop: 5 }}
+                                />
                             </Button>
                         </td>
                     </tr>

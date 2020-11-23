@@ -22,6 +22,7 @@ import moment from "moment";
 import axios from "axios";
 import Header from "../components/Header";
 import { AuthContext } from "../Context/auth";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 
 export class EmpLeave extends Component {
     static contextType = AuthContext;
@@ -35,37 +36,58 @@ export class EmpLeave extends Component {
             female_leave_reason: "",
             leaves: [],
             loading: true,
+            is_female: false,
         };
     }
 
     componentDidMount = () => {
-        axios
-            .get("/leave/get-employee-leaves/5fb51f168c4cd2001797be6e")
-            .then((response) => {
-                this.setState({
-                    leaves: response.data.leaves,
-                    loading: false,
+        let type = localStorage.getItem("heaserType");
+        let userId = localStorage.getItem("userId");
+        if (type === "employee") {
+            axios
+                .get(`/leave/get-employee-leaves/${userId}`)
+                .then((response) => {
+                    this.setState({
+                        leaves: response.data.leaves,
+                        loading: false,
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        } else {
+            axios
+                .get(`/leave/get-organization-leaves/${userId}`)
+                .then((response) => {
+                    this.setState({
+                        leaves: response.data.leaves,
+                        loading: false,
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
     };
+
     toggleModal = () => {
         this.setState({
             isModalOpen: !this.state.isModalOpen,
         });
     };
+
     handleStartDateChange = (date) => {
         this.setState({
             startDate: date,
         });
     };
+
     handleEndDateChange = (date) => {
         this.setState({
             endDate: date,
         });
     };
+
     handleInputChange = (event) => {
         const target = event.target;
         const name = target.name;
@@ -74,6 +96,29 @@ export class EmpLeave extends Component {
             [name]: value,
         });
     };
+
+    leaveAcceptHandler = async (id) => {
+        await axios
+            .put("/leave/accept-leave", {
+                orgId: this.context.userId,
+                leaveId: id,
+            })
+            .then((response) => {
+                const data = [...this.state.leaves];
+
+                const index = data.findIndex((item) => item._id === id);
+
+                data.splice(index, 1);
+
+                this.setState({
+                    leaves: data,
+                });
+            })
+            .catch(function (error) {
+                alert("error");
+            });
+    };
+
     onSubmit = () => {
         axios
             .post("/leave/create-leave", {
@@ -81,10 +126,23 @@ export class EmpLeave extends Component {
                 startDate: moment(this.state.startDate).format("YYYY-MM-DD"),
                 endDate: moment(this.state.endDate).format("YYYY-MM-DD"),
                 reason: this.state.reason,
-                is_female: false,
+                is_female: this.state.is_female,
                 female_leave_reason: this.state.female_leave_reason,
             })
             .then((response) => {
+                const data = [...this.state.leaves];
+                data.push({
+                    employee: this.context.userId,
+                    startDate: moment(this.state.startDate).format(
+                        "YYYY-MM-DD"
+                    ),
+                    endDate: moment(this.state.endDate).format("YYYY-MM-DD"),
+                    reason: this.state.reason,
+                    is_female: this.state.is_female,
+                    female_leave_reason: this.state.female_leave_reason,
+                    _id: response.data.leave._id,
+                });
+                this.setState({ leaves: data });
                 this.toggleModal();
             })
             .catch(function (error) {
@@ -93,7 +151,7 @@ export class EmpLeave extends Component {
     };
 
     render() {
-        const displayleaves = this.state.leaves.map((l) => {
+        const displayleavesEmployees = this.state.leaves.map((l) => {
             const temp =
                 l.accepted == true ? "Accepted" : "Waiting for approval";
             const styling =
@@ -102,6 +160,7 @@ export class EmpLeave extends Component {
                     : { color: "#e2c10a" };
             return (
                 <tr>
+                    <td>{l.reason}</td>
                     <td>{moment(l.startDate).format("MMM Do YY")}</td>
                     <td>{moment(l.endDate).format("MMM Do YY")}</td>
                     {/* <td>{l.accepted==true?"Accepted":"Waiting for approval"}</td> */}
@@ -109,11 +168,41 @@ export class EmpLeave extends Component {
                 </tr>
             );
         });
+
+        const displayleavesOrg = this.state.leaves.map((l) => {
+            return (
+                <tr>
+                    <td>{l.reason}</td>
+                    <td>{moment(l.startDate).format("MMM Do YY")}</td>
+                    <td>{moment(l.endDate).format("MMM Do YY")}</td>
+                    {/* <td>{l.accepted==true?"Accepted":"Waiting for approval"}</td> */}
+                    <td>
+                        <Button
+                            id={l._id}
+                            style={{
+                                background: "transparent",
+                                paddingTop: "0px",
+                            }}
+                            onClick={() => {
+                                this.leaveAcceptHandler(l._id);
+                            }}
+                        >
+                            <AiOutlineCheckCircle
+                                style={{ color: "green", paddingTop: 5 }}
+                            />
+                        </Button>
+                    </td>
+                </tr>
+            );
+        });
+
         const displaycheck =
             this.state.leaves.length == 0 ? (
                 <p>No applied leaves</p>
+            ) : this.context.userId === "employee" ? (
+                displayleavesEmployees
             ) : (
-                displayleaves
+                displayleavesOrg
             );
         const display =
             this.state.loading == true ? (
@@ -170,18 +259,35 @@ export class EmpLeave extends Component {
                                         onChange={this.handleInputChange}
                                     />
                                 </FormGroup>
-                                <FormGroup>
-                                    <Label for="quantity">
-                                        Special Reason for female employees
-                                        (Optional)
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input
+                                            type="checkbox"
+                                            checked={this.state.is_female}
+                                            onClick={(e) => {
+                                                this.setState({
+                                                    is_female: !this.state
+                                                        .is_female,
+                                                });
+                                            }}
+                                        />{" "}
+                                        Is Female
                                     </Label>
-                                    <Input
-                                        type="text"
-                                        name="female_leave_reason"
-                                        id=""
-                                        onChange={this.handleInputChange}
-                                    />
                                 </FormGroup>
+                                {this.state.is_female ? (
+                                    <FormGroup>
+                                        <Label for="quantity">
+                                            Special Reason for female employees
+                                            (Optional)
+                                        </Label>
+                                        <Input
+                                            type="text"
+                                            name="female_leave_reason"
+                                            id=""
+                                            onChange={this.handleInputChange}
+                                        />
+                                    </FormGroup>
+                                ) : null}
                             </Form>
                             <Button
                                 style={{
@@ -199,36 +305,62 @@ export class EmpLeave extends Component {
                     </Modal>
                     <div className="row">
                         <div className="col-md-6">
-                            <Button
-                                style={{
-                                    width: "50%",
-                                    backgroundColor: "#1976d2",
-                                    color: "white",
-                                    display: "block",
-                                    margin: "auto",
-                                }}
-                                onClick={this.toggleModal}
-                            >
-                                Apply for a leave
-                            </Button>
-                            <br /> <br />
-                            <Card>
-                                <CardBody>
-                                    <CardTitle tag="h5">
-                                        Requested leaves
-                                    </CardTitle>
-                                    <CardText>
-                                        <Table hover>
-                                            <tr>
-                                                <th>From</th>
-                                                <th>To</th>
-                                                <th>Status</th>
-                                            </tr>
-                                            {display}
-                                        </Table>
-                                    </CardText>
-                                </CardBody>
-                            </Card>
+                            {this.context.type === "employee" ? (
+                                <>
+                                    <Button
+                                        style={{
+                                            width: "50%",
+                                            backgroundColor: "#1976d2",
+                                            color: "white",
+                                            display: "block",
+                                            margin: "auto",
+                                        }}
+                                        onClick={this.toggleModal}
+                                    >
+                                        Apply for a leave
+                                    </Button>
+                                    <br /> <br />
+                                    <Card>
+                                        <CardBody>
+                                            <CardTitle tag="h5">
+                                                Requested leaves
+                                            </CardTitle>
+                                            <CardText>
+                                                <Table hover>
+                                                    <tr>
+                                                        <th>Reason</th>
+                                                        <th>From</th>
+                                                        <th>To</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    {displayleavesEmployees}
+                                                </Table>
+                                            </CardText>
+                                        </CardBody>
+                                    </Card>
+                                </>
+                            ) : (
+                                <>
+                                    <Card>
+                                        <CardBody>
+                                            <CardTitle tag="h5">
+                                                Requested leaves
+                                            </CardTitle>
+                                            <CardText>
+                                                <Table hover>
+                                                    <tr>
+                                                        <th>Reason</th>
+                                                        <th>From</th>
+                                                        <th>To</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    {displayleavesOrg}
+                                                </Table>
+                                            </CardText>
+                                        </CardBody>
+                                    </Card>
+                                </>
+                            )}
                         </div>
                         <div className="col-md-6">
                             <img src={empleave} />
