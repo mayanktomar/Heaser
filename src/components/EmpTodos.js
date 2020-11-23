@@ -384,11 +384,11 @@ export class EmpTodos extends Component {
                             <CircularProgressbarWithChildren
                                 value={value}
                                 text={
-                                    `${Math.round(
+                                    `${this.state.todoslength!=0?Math.round(
                                         (this.state.todoscomp /
                                             this.state.todoslength) *
                                             100
-                                    )}%` + `${emoji}`
+                                    ):0}%` + `${emoji}`
                                 }
                                 /* This is important to include, because if you're fully managing the
                                 animation yourself, you'll want to disable the CSS animation. */
