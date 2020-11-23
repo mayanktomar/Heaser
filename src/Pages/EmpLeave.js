@@ -21,8 +21,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import axios from "axios";
 import Header from "../components/Header";
+import { AuthContext } from "../Context/auth";
 
 export class EmpLeave extends Component {
+    static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -75,7 +77,7 @@ export class EmpLeave extends Component {
     onSubmit = () => {
         axios
             .post("/leave/create-leave", {
-                employee: "5fb51f168c4cd2001797be6e",
+                employee: this.context.userId,
                 startDate: moment(this.state.startDate).format("YYYY-MM-DD"),
                 endDate: moment(this.state.endDate).format("YYYY-MM-DD"),
                 reason: this.state.reason,

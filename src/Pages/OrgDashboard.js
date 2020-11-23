@@ -23,7 +23,7 @@ export class OrgDashboard extends Component {
             <>
                 <Header {...this.props} />
                 <div className="container orgdash">
-                    <h2>Welcome, {this.context.data.name}</h2>
+                    <h2>Welcome, XYZ</h2>
                     <br />
                     {/* <div className="row" style={{width:'100%'}}>
                     <img src={bg1}/>
