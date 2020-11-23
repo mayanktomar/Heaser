@@ -6,6 +6,10 @@ import OrgDashboard from "./Pages/OrgDashboard";
 import PrivateRoute from "./PrivateRoutes";
 import { AuthContext } from "./Context/auth";
 import Chat from "./Pages/Chat/Chat";
+import AddEmployee from "./Pages/AddEmployee";
+import EmpMain from "./Pages/EmpMain";
+import EmpAnnouncements from "./Pages/EmpAnnouncements";
+import EmpLeave from "./Pages/EmpLeave";
 
 function App() {
     const [token, setToken] = useState(null);
@@ -61,6 +65,16 @@ function App() {
                         <PrivateRoute
                             path="/organization"
                             component={OrgDashboard}
+                        />
+                        <PrivateRoute
+                            path="/add-employee"
+                            component={AddEmployee}
+                        />
+                        <PrivateRoute path="/task" component={EmpMain} />
+                        <PrivateRoute path="/leave" component={EmpLeave} />
+                        <PrivateRoute
+                            path="/announcement"
+                            component={EmpAnnouncements}
                         />
                     </AuthContext.Provider>
                 </Switch>

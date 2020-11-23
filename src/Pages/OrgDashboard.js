@@ -2,14 +2,28 @@ import React, { Component } from "react";
 import bg1 from "../assets/bg1.jpg";
 import { Card, CardBody, CardText, CardTitle, Button } from "reactstrap";
 import Header from "../components/Header";
+import AnnouncementModal from "../components/AnnouncementModal";
+import { AuthContext } from "../Context/auth";
 
 export class OrgDashboard extends Component {
+    static contextType = AuthContext;
+    constructor(props) {
+        super(props);
+        this.state = {
+            isAnnounceModalOpen: false,
+        };
+    }
+
+    toggleAnnounceModal = () => {
+        this.setState({ isAnnounceModalOpen: !this.state.isAnnounceModalOpen });
+    };
+
     render() {
         return (
             <>
                 <Header {...this.props} />
                 <div className="container orgdash">
-                    <h2>Welcome, xyz</h2>
+                    <h2>Welcome, {this.context.data.name}</h2>
                     <br />
                     {/* <div className="row" style={{width:'100%'}}>
                     <img src={bg1}/>
@@ -73,6 +87,11 @@ export class OrgDashboard extends Component {
                                                 margin: "auto",
                                                 color: "white",
                                             }}
+                                            onClick={() => {
+                                                this.props.history.push(
+                                                    "/add-employee"
+                                                );
+                                            }}
                                         >
                                             Add your employee
                                         </Button>
@@ -96,6 +115,7 @@ export class OrgDashboard extends Component {
                             </Button>
                             <br />
                             <Button
+                                onClick={this.toggleAnnounceModal}
                                 style={{
                                     backgroundColor: "#1976d2",
                                     width: "75%",
@@ -121,6 +141,10 @@ export class OrgDashboard extends Component {
                         </div>
                     </div>
                 </div>
+                <AnnouncementModal
+                    isAnnounceModalOpen={this.state.isAnnounceModalOpen}
+                    toggleAnnounceModal={this.toggleAnnounceModal}
+                />
             </>
         );
     }
