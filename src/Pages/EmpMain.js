@@ -50,7 +50,10 @@ export class EmpMain extends Component {
                             <Card className="timecard">
                                 <CardBody>
                                     <h6 style={{ fontWeight: "bold" }}>
-                                        It is{" "}
+                                        Hi{" "}
+                                        {this.context.data &&
+                                            this.context.data.name}
+                                        , It is{" "}
                                         {moment(this.state.datetime).format(
                                             "MMMM Do YYYY, h:mm:ss a"
                                         )}
@@ -59,13 +62,13 @@ export class EmpMain extends Component {
                             </Card>
                         </div>
                         <div className="col-md-4">
-                            <EmpTasks />
+                            <EmpTasks {...this.props} />
                         </div>
                         <div className="col-md-4">
-                            <EmpTodos />
+                            <EmpTodos {...this.props} />
                         </div>
                         <div className="col-md-4">
-                            <EmpTime />
+                            <EmpTime {...this.props} />
                         </div>
                     </div>
                 </div>

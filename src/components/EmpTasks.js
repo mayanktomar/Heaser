@@ -189,6 +189,16 @@ export class EmpTasks extends Component {
             if (t.from._id != t.to) {
                 return (
                     <tr>
+                        <td
+                            onClick={() => {
+                                this.props.history.push(
+                                    `/employee/${t.from._id}`
+                                );
+                            }}
+                            style={{ cursor: "pointer", color: "#1976d2" }}
+                        >
+                            {t.from.name}
+                        </td>
                         <td>{t.heading}</td>
 
                         <td>
@@ -441,6 +451,7 @@ export class EmpTasks extends Component {
                         <CardText>
                             <Table hover>
                                 <tr>
+                                    <th>From</th>
                                     <th>Task</th>
                                     <th>info</th>
                                     <th></th>
