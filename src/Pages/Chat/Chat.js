@@ -150,7 +150,7 @@ export default class Chat extends Component {
                         <div class="search">
                             <input
                                 type="text"
-                                placeholder="search"
+                                placeholder="Search"
                                 onChange={this.searchHandler}
                             />
                             <i class="fa fa-search"></i>

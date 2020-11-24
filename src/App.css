@@ -91,6 +91,12 @@
   height: 300px;
   overflow-y: scroll;
 }
+.emptime .card {
+  border: 2px solid #3e98c7;
+  border-radius: 10%;
+  height: 300px;
+  overflow-y: scroll;
+}
 
 .CircularProgressbar {
   width: 50% !important;
@@ -99,7 +105,7 @@
 }
 
 .empleave {
-    padding: 70px;
+  padding: 70px;
 }
 
 .empleave img {
@@ -119,7 +125,7 @@
 }
 
 .empannounce {
-    padding: 50px;
+  padding: 50px;
 }
 
 .empannounce .card {

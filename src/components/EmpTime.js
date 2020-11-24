@@ -1,61 +1,17 @@
-<<<<<<< HEAD
-import React, { Component } from 'react'
-import { Button } from 'reactstrap';
-import querystring from 'query-string';
-import axios from 'axios';
-
-export class EmpTime extends Component {
-
-    constructor(props){
-        super(props);
-        this.state={
-            code:''
-        }
-    }
-    
-    componentDidMount=()=>{
-        // let search=window.location.search;
-        // const parsed=querystring.parse(search);
-        // this.setState({
-        //     code:parsed.code
-        // })
-
-        axios.get("/courses/get-courses", {
-            page: 1,
-            page_size: 10,
-            category: "Development",
-        })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-       
-    }
-
-    
-    render() {
-        return (
-            <div>
-                <a target="_blank" href="https://wakatime.com/oauth/authorize?client_id=TRCp0dKnVHWPc91II89xckEd&client_secret=sec_ulgjonFt5oGcIDeDJDZvABNfoqCEoiEuoGFjFgObeT28BZCmI8EFW3K5gfvRvgBkDtFcUpDSczsUPxQZ&redirect_uri=http://localhost:3000/task&scope=read_stats,email,read_logged_time,write_logged_time,read_orgs,read_private_leaderboards,write_private_leaderboards&response_type=code&name=HeaseR"><Button style={{
-                        backgroundColor: "#3e98c7",
-                        width: "75%",
-                        color: "black",
-                        display: "block",
-                        margin: "auto",
-                    }}>Link your Wakatime</Button></a>
-            </div>
-        )
-    }
-}
-
-export default EmpTime
-=======
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button, Spinner, Card, CardBody, CardText, CardTitle, Table } from "reactstrap";
 import queryString from "query-string";
 import Axios from "axios";
+import {
+    CircularProgressbar,
+    buildStyles,
+    CircularProgressbarWithChildren,
+} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { easeQuadInOut } from "d3-ease";
+import AnimatedProgressProvider from "./AnimatedProgressProvider";
+import RadialSeparators from "./RadialSeparators";
+import moment from "moment";
 
 class EmpTime extends Component {
     constructor(props) {
@@ -65,10 +21,15 @@ class EmpTime extends Component {
             access_token: "",
             type: null,
             refresh_token: "",
+            result:[],
+            totalDuration:0,
+            projects:[],
+            durations:[],
+            loadingDurations:true
         };
     }
 
-    componentDidMount() {
+    componentDidMount=async ()=> {
         let stor = localStorage.getItem("heaserWakatime");
         this.setState({ type: stor });
         let access_code = localStorage.getItem("heaserWakatimeAccess");
@@ -137,17 +98,99 @@ class EmpTime extends Component {
                     });
             }
         } else {
-            Axios.get(`/wakatime/get-projects/${access_code}`)
+            await Axios.get(`/wakatime/get-projects/${access_code}`)
                 .then((result) => {
                     console.log(result.data);
+                    this.setState({
+                        result:result.data.data
+                    })
                 })
                 .catch((err) => {
                     console.log(err);
                 });
+
+                await this.state.result.map((r)=>{
+                    const temp=this.state.projects;
+                    if (temp.indexOf(r.project)<0)
+                    {
+                        temp.push(r.project);
+                    }
+                    this.setState({
+                        totalDuration:((this.state.totalDuration*60)+r.duration)/60,
+                        projects:temp
+                    })
+                })
+
+                if (this.state.projects.length>0)
+                { 
+                   
+                    await this.state.projects.map(async (p)=>{
+                        const temp=this.state.durations;
+                        const temp1={};
+                        const data = this.state.result.filter((obj) => {
+                            return obj.project === p;
+                        });
+                        var t=0;
+                        await data.map((d)=>{
+                            t=t+d.duration
+                        })
+                        temp1["name"]=p;
+                        temp1["time"]=t;
+                        temp.push(temp1);
+                    console.log(temp)
+                    this.setState({
+                        durations:temp
+                    })
+                    this.setState({
+                        loadingDurations:false
+                    })
+                    })
+
+                    
+                }
         }
     }
 
     render() {
+        let emoji;
+
+        {
+           
+
+            if (this.state.totalDuration<60)
+            {
+                emoji="😐";
+            }
+            else if (this.state.totalDuration<120)
+            {
+                emoji="🙂";
+            }
+            else if (this.state.totalDuration<180)
+            {
+                emoji="😀";
+            }
+            else if (this.state.totalDuration<240)
+            {
+                emoji="😁";
+            }
+            else if (this.state.totalDuration<300)
+            {
+                emoji="😤";
+            }
+            else{
+                emoji="💪"
+            }
+        }
+       
+        const displayprojects=this.state.durations.map((d)=>{
+            return(
+                <tr>
+                    <td>{d.name}</td>
+                    <td>{Math.ceil(d.time/60)}</td>
+                </tr>
+            )
+        })
+        const display=this.state.loadingDurations==true?<Spinner color="info"/>:displayprojects
         return this.state.type !== "first" ? (
             <Button
                 onClick={(e) => {
@@ -160,9 +203,58 @@ class EmpTime extends Component {
             >
                 Login to Wakatime
             </Button>
-        ) : null;
+        ) :
+        <div className="emptime">
+             <AnimatedProgressProvider
+                    valueStart={0}
+                    valueEnd={
+                        this.state.totalDuration != 0 
+                            ? ((this.state.totalDuration) / 360 ) *
+                              100
+                            : 0
+                    }
+                    duration={1.4}
+                    easingFunction={easeQuadInOut}
+                >
+                    {(value) => {
+                        const roundedValue = Math.round(value);
+                        return (
+                            <CircularProgressbarWithChildren
+                                value={value}
+                                text={
+                                    `${Math.ceil(
+                                        (this.state.totalDuration)
+                                    )}m` + `${emoji}`
+                                }
+                                
+                                styles={buildStyles({ pathTransition: "none" })}
+                            ></CircularProgressbarWithChildren>
+                        );
+                    }}
+                </AnimatedProgressProvider>
+
+                <br />
+                <Card>
+                    <CardBody>
+                        <CardTitle tag="h5">Your working time</CardTitle>
+
+                        <CardText>
+                            <Table hover>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Time(mins)</th>
+                                    
+                                </tr>
+                                {display}
+                            </Table>
+                        </CardText>
+                    </CardBody>
+                </Card>
+        </div>
+        
+        
+        ;
     }
 }
 
 export default EmpTime;
->>>>>>> 8eaf0be7e8ddcb9e794811c4cf0b5c448829b019

@@ -46,6 +46,7 @@ export class EmpTodos extends Component {
             taskdesc: "",
             enddate: new Date(),
             isAllotModalOpen: false,
+            checktodos:false
         };
     }
 
@@ -174,7 +175,9 @@ export class EmpTodos extends Component {
                 moment(t.endDate).format("YYYY-MM-DD") ==
                     moment(new Date()).format("YYYY-MM-DD")
             ) {
+                
                 return (
+                    
                     <tr>
                         <td>{t.heading}</td>
 
@@ -209,6 +212,7 @@ export class EmpTodos extends Component {
         let emoji;
 
         {
+           
             if (
                 Math.round(
                     (this.state.todoscomp / this.state.todoslength) * 100 <= 25
@@ -329,7 +333,7 @@ export class EmpTodos extends Component {
                 <br />
                 <Card>
                     <CardBody>
-                        <CardTitle>Your todos</CardTitle>
+                        <CardTitle>Your pending todos</CardTitle>
                         <CardText>
                             <Table hover>
                                 <tr>

@@ -8,236 +8,237 @@ $gray: #92959e;
 *,
 *:before,
 *:after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .chat-container {
-    margin: 0 auto;
-    width: 90%;
-    border-radius: 5px;
-    margin-top: 30px;
+  margin: 0 auto;
+  width: 90%;
+  border-radius: 5px;
+  margin-top: 30px;
 }
 
 .people-list {
-    width: 30%;
+  width: 30%;
+  float: left;
+
+  .search {
+    padding: 20px;
+  }
+
+  input {
+    border-radius: 3px;
+    border: none;
+    padding: 14px;
+    color: black !important;
+    width: 90%;
+    font-size: 14px;
+    border: 1px solid gray;
+    border-radius: 30px;
+    outline: none;
+  }
+
+  .fa-search {
+    position: relative;
+    left: -25px;
+  }
+
+  ul {
+    padding: 20px;
+    height: 770px;
+
+    li {
+      padding-bottom: 20px;
+    }
+    list-style-type: none;
+  }
+
+  img {
     float: left;
+  }
 
-    .search {
-        padding: 20px;
-    }
+  .about {
+    float: left;
+    margin-top: 8px;
+  }
 
-    input {
-        border-radius: 3px;
-        border: none;
-        padding: 14px;
-        color: white;
-        width: 90%;
-        font-size: 14px;
-        border: 1px solid gray;
-        border-radius: 30px;
-    }
+  .about {
+    padding-left: 8px;
+  }
 
-    .fa-search {
-        position: relative;
-        left: -25px;
-    }
-
-    ul {
-        padding: 20px;
-        height: 770px;
-
-        li {
-            padding-bottom: 20px;
-        }
-        list-style-type: none;
-    }
-
-    img {
-        float: left;
-    }
-
-    .about {
-        float: left;
-        margin-top: 8px;
-    }
-
-    .about {
-        padding-left: 8px;
-    }
-
-    .status {
-        color: $gray;
-    }
+  .status {
+    color: $gray;
+  }
 }
 
 .chat {
-    width: 70%;
-    float: left;
-    background: #f2f5f8;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    color: #434651;
+  width: 70%;
+  float: left;
+  background: #f2f5f8;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #434651;
 
-    .chat-header {
-        padding: 10px;
-        border-bottom: 2px solid white;
+  .chat-header {
+    padding: 10px;
+    border-bottom: 2px solid white;
 
-        img {
-            float: left;
-        }
-
-        .chat-about {
-            float: left;
-            padding-left: 10px;
-            margin-top: 6px;
-        }
-
-        .chat-with {
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .chat-num-messages {
-            color: $gray;
-        }
-
-        .fa-star {
-            float: right;
-            color: #d8dadf;
-            font-size: 20px;
-            margin-top: 12px;
-        }
+    img {
+      float: left;
     }
 
-    .chat-history {
-        padding: 30px 30px 20px;
-        border-bottom: 2px solid white;
-        overflow-y: scroll;
-        height: 575px;
-
-        .message-data {
-            margin-bottom: 15px;
-        }
-
-        .message-data-time {
-            color: lighten($gray, 8%);
-            padding-left: 6px;
-        }
-
-        .message {
-            color: white;
-            padding: 18px 20px;
-            line-height: 26px;
-            font-size: 16px;
-            border-radius: 7px;
-            margin-bottom: 30px;
-            width: 40%;
-            position: relative;
-
-            &:after {
-                bottom: 100%;
-                left: 7%;
-                border: solid transparent;
-                content: " ";
-                height: 0;
-                width: 0;
-                position: absolute;
-                pointer-events: none;
-                border-bottom-color: $green;
-                border-width: 10px;
-                margin-left: -10px;
-            }
-        }
-
-        .my-message {
-            background: $green;
-        }
-
-        .other-message {
-            background: $blue;
-
-            &:after {
-                border-bottom-color: $blue;
-                left: 93%;
-            }
-        }
+    .chat-about {
+      float: left;
+      padding-left: 10px;
+      margin-top: 6px;
     }
 
-    .chat-message {
-        padding: 30px;
-
-        textarea {
-            width: 100%;
-            border: none;
-            padding: 10px 20px;
-            font: 14px/22px "Lato", Arial, sans-serif;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            resize: none;
-        }
-
-        .fa-file-o,
-        .fa-file-image-o {
-            font-size: 16px;
-            color: gray;
-            cursor: pointer;
-        }
-
-        button {
-            float: right;
-            color: $blue;
-            font-size: 16px;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            background: #f2f5f8;
-
-            &:hover {
-                color: darken($blue, 7%);
-            }
-        }
+    .chat-with {
+      font-weight: bold;
+      font-size: 16px;
     }
+
+    .chat-num-messages {
+      color: $gray;
+    }
+
+    .fa-star {
+      float: right;
+      color: #d8dadf;
+      font-size: 20px;
+      margin-top: 12px;
+    }
+  }
+
+  .chat-history {
+    padding: 30px 30px 20px;
+    border-bottom: 2px solid white;
+    overflow-y: scroll;
+    height: 575px;
+
+    .message-data {
+      margin-bottom: 15px;
+    }
+
+    .message-data-time {
+      color: lighten($gray, 8%);
+      padding-left: 6px;
+    }
+
+    .message {
+      color: white;
+      padding: 18px 20px;
+      line-height: 26px;
+      font-size: 16px;
+      border-radius: 7px;
+      margin-bottom: 30px;
+      width: 40%;
+      position: relative;
+
+      &:after {
+        bottom: 100%;
+        left: 7%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-bottom-color: $green;
+        border-width: 10px;
+        margin-left: -10px;
+      }
+    }
+
+    .my-message {
+      background: $green;
+    }
+
+    .other-message {
+      background: $blue;
+
+      &:after {
+        border-bottom-color: $blue;
+        left: 93%;
+      }
+    }
+  }
+
+  .chat-message {
+    padding: 30px;
+
+    textarea {
+      width: 100%;
+      border: none;
+      padding: 10px 20px;
+      font: 14px/22px "Lato", Arial, sans-serif;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      resize: none;
+    }
+
+    .fa-file-o,
+    .fa-file-image-o {
+      font-size: 16px;
+      color: gray;
+      cursor: pointer;
+    }
+
+    button {
+      float: right;
+      color: $blue;
+      font-size: 16px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      background: #f2f5f8;
+
+      &:hover {
+        color: darken($blue, 7%);
+      }
+    }
+  }
 }
 
 .online,
 .offline,
 .me {
-    margin-right: 3px;
-    font-size: 10px;
+  margin-right: 3px;
+  font-size: 10px;
 }
 
 .online {
-    color: $green;
+  color: $green;
 }
 
 .offline {
-    color: $orange;
+  color: $orange;
 }
 
 .me {
-    color: $blue;
+  color: $blue;
 }
 
 .align-left {
-    text-align: left;
+  text-align: left;
 }
 
 .align-right {
-    text-align: right;
+  text-align: right;
 }
 
 .float-right {
-    float: right;
+  float: right;
 }
 
 .clearfix:after {
-    visibility: hidden;
-    display: block;
-    font-size: 0;
-    content: " ";
-    clear: both;
-    height: 0;
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
 }

@@ -187,9 +187,14 @@ export class EmpTasks extends Component {
     render() {
         const displaytasks = this.state.tasks.map((t) => {
             if (t.from._id != t.to) {
+               
+                const styling =
+                t.isCompleted == true
+                    ? { color: "#338333" }
+                    : { color: "#e2c10a" };
                 return (
                     <tr>
-                        <td>{t.heading}</td>
+                        <td style={styling}>{t.heading}</td>
 
                         <td>
                             <Button
@@ -203,6 +208,7 @@ export class EmpTasks extends Component {
                                 <FcInfo />
                             </Button>
                         </td>
+                        
                     </tr>
                 );
             }
@@ -443,7 +449,7 @@ export class EmpTasks extends Component {
                                 <tr>
                                     <th>Task</th>
                                     <th>info</th>
-                                    <th></th>
+                                    
                                 </tr>
                                 {display}
                             </Table>

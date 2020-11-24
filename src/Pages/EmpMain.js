@@ -67,9 +67,7 @@ export class EmpMain extends Component {
                         <div className="col-md-4">
                             <EmpTime />
                         </div>
-                        <div className="col-md-4">
-                            <EmpTime/>
-                        </div>
+                       
                     </div>
                 </div>
                 {this.state.chatBotOpen ? (
