@@ -27,7 +27,7 @@ class NotificationModal extends Component {
                     Notifications{" "}
                     <Badge color="secondary">{this.props.data.length}</Badge>
                 </ModalHeader>
-                <ModalBody>
+                <ModalBody style={{ height: 500, overflowY: "scroll" }}>
                     <ListGroup>
                         {this.props.data.map((item) => {
                             return (

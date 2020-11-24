@@ -56,7 +56,7 @@ export class EmployeeLoginModal extends Component {
                 );
                 this.setState({ loader: false });
                 this.props.toggleEmpModal();
-                this.props.history.push("/workspace");
+                this.props.history.push("/task");
             })
             .catch((err) => {
                 console.log(err);

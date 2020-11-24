@@ -10,6 +10,8 @@ import AddEmployee from "./Pages/AddEmployee";
 import EmpMain from "./Pages/EmpMain";
 import EmpAnnouncements from "./Pages/EmpAnnouncements";
 import EmpLeave from "./Pages/EmpLeave";
+import Axios from "axios";
+import Profile from "./Pages/Profile";
 import EmpResources from "./components/EmpResources";
 
 function App() {
@@ -78,6 +80,7 @@ function App() {
                             component={EmpAnnouncements}
                         />
                         <PrivateRoute path="/resources" component={EmpResources}/>
+                        <PrivateRoute path="/profile" component={Profile} />
                     </AuthContext.Provider>
                 </Switch>
             </BrowserRouter>

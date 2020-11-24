@@ -30,8 +30,10 @@ import { easeQuadInOut } from "d3-ease";
 import AnimatedProgressProvider from "./AnimatedProgressProvider";
 import moment from "moment";
 import DateTimePicker from "react-datetime-picker";
+import { AuthContext } from "../Context/auth";
 
 export class EmpTodos extends Component {
+    static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -48,8 +50,10 @@ export class EmpTodos extends Component {
     }
 
     componentDidMount = async () => {
+        let userId = localStorage.getItem("userId");
+
         await axios
-            .get("/task/get-employee-tasks/" + this.props.userId)
+            .get("/task/get-employee-tasks/" + userId)
             .then((response) => {
                 this.setState({
                     todos: response.data.tasks,
@@ -84,23 +88,6 @@ export class EmpTodos extends Component {
         });
     };
 
-    // findProgress=()=>{
-    //        this.state.todos.map((t)=>{
-    //        console.log("Hleo")
-    //     if (t.from._id===t.to&&t.isCompleted==false&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-    //     {
-    //         this.setState({
-    //             todoslength:this.state.todoslength+1
-    //         })
-    //     }
-    //     if (t.from._id===t.to&&t.isCompleted==true&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-    //     {
-    //         this.setState({
-    //             todoscomp:this.state.todoscomp+1
-    //         })
-    //     }
-    //    })
-    // }
     toggleAllotModal = () => {
         this.setState({
             isAllotModalOpen: !this.state.isAllotModalOpen,
@@ -121,8 +108,8 @@ export class EmpTodos extends Component {
 
         await axios
             .post("/task/create-task", {
-                from: this.props.userId,
-                to: this.props.userId,
+                from: this.context.userId,
+                to: this.context.userId,
                 heading: this.state.tasktitle,
                 description: this.state.taskdesc,
                 startDate: moment(new Date()).format("YYYY-MM-DD H:mm"),
@@ -134,9 +121,9 @@ export class EmpTodos extends Component {
                 data.push({
                     _id: response.data.task._id,
                     from: {
-                        _id: this.props.userId,
+                        _id: this.context.userId,
                     },
-                    to: this.props.userId,
+                    to: this.context.userId,
                     heading: this.state.tasktitle,
                     description: this.state.taskdesc,
                     startDate: moment(new Date()).format("YYYY-MM-DD H:mm"),
@@ -154,37 +141,7 @@ export class EmpTodos extends Component {
             .catch(function (error) {
                 alert("error");
             });
-
-        //   await axios.get('/task/get-employee-tasks/'+this.props.userId)
-        // .then( (response)=> {
-        //     this.setState({
-        //         todos:response.data.tasks,
-        //         loading:false
-        //     })
-
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        // });
-
-        // await this.state.todos.map((t)=>{
-        //     console.log("Hleo")
-        //  if (t.from._id===t.to&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-        //  {
-        //      this.setState({
-        //          todoslength:this.state.todoslength+1
-        //      })
-        //  }
-        //  if (t.from._id===t.to&&t.isCompleted==true&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-        //  {
-        //      this.setState({
-        //          todoscomp:this.state.todoscomp+1
-        //      })
-        //  }
-        // })
-        // this.findProgress();
         this.toggleAllotModal();
-        //   this.findProgress();
     };
 
     onDelete = async (event) => {
@@ -207,45 +164,10 @@ export class EmpTodos extends Component {
             .catch(function (error) {
                 alert("error");
             });
-
-        //   this.setState({
-        //       loading:true
-        //   })
-
-        //   await axios.get('/task/get-employee-tasks/'+this.props.userId)
-        //   .then( (response)=> {
-        //       this.setState({
-        //           todos:response.data.tasks,
-        //           loading:false
-        //       })
-
-        //   })
-        //   .catch(function (error) {
-        //       console.log(error);
-        //   });
-
-        //   await this.state.todos.map((t)=>{
-        //     console.log("Hleo")
-        //  if (t.from._id===t.to&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-        //  {
-        //      this.setState({
-        //          todoslength:this.state.todoslength+1
-        //      })
-        //  }
-        //  if (t.from._id===t.to&&t.isCompleted==true&&(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD')))
-        //  {
-        //      this.setState({
-        //          todoscomp:this.state.todoscomp+1
-        //      })
-        //  }
-        // })
-        //   this.findProgress();
     };
 
     render() {
         const displaytasks = this.state.todos.map((t) => {
-            // console.log(moment(t.endDate).format('YYYY-MM-DD')==moment(new Date()).format('YYYY-MM-DD'))
-
             if (
                 t.from._id === t.to &&
                 t.isCompleted == false &&
@@ -266,7 +188,9 @@ export class EmpTodos extends Component {
                                 }}
                                 onClick={this.onDelete}
                             >
-                                <AiOutlineCheckCircle />
+                                <AiOutlineCheckCircle
+                                    style={{ color: "green", paddingTop: 5 }}
+                                />
                             </Button>
                         </td>
                     </tr>
@@ -344,6 +268,7 @@ export class EmpTodos extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <Label>End Time</Label>
+                                {"   "}
                                 <DateTimePicker
                                     onChange={this.onEndDateChange}
                                     value={this.state.enddate}
@@ -384,11 +309,15 @@ export class EmpTodos extends Component {
                             <CircularProgressbarWithChildren
                                 value={value}
                                 text={
-                                    `${this.state.todoslength!=0?Math.round(
-                                        (this.state.todoscomp /
-                                            this.state.todoslength) *
-                                            100
-                                    ):0}%` + `${emoji}`
+                                    `${
+                                        this.state.todoslength != 0
+                                            ? Math.round(
+                                                  (this.state.todoscomp /
+                                                      this.state.todoslength) *
+                                                      100
+                                              )
+                                            : 0
+                                    }%` + `${emoji}`
                                 }
                                 /* This is important to include, because if you're fully managing the
                                 animation yourself, you'll want to disable the CSS animation. */

@@ -4,7 +4,7 @@ import { AuthContext, useAuthContext } from "../../Context/auth";
 import moment from "moment";
 import Header from "../../components/Header";
 import { ChatService } from "../../chat/index";
-import ChatImage from "../../assets/chat.svg";
+import ChatImage from "../../assets/chat1.svg";
 
 export default class Chat extends Component {
     static contextType = AuthContext;

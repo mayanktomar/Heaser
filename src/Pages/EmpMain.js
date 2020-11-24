@@ -1,20 +1,28 @@
 import React, { Component } from "react";
 import WelcomeModal from "../components/WelcomeModal";
 import EmpTasks from "../components/EmpTasks";
-import { CardBody, Card } from "reactstrap";
+import { CardBody, Card, Button } from "reactstrap";
 import moment from "moment";
 import EmpTodos from "../components/EmpTodos";
 import Header from "../components/Header";
+import { BsFillChatFill } from "react-icons/bs";
 import EmpTime from "../components/EmpTime";
+import { AuthContext } from "../Context/auth";
 
 export class EmpMain extends Component {
+    static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {
             isWelModalOpen: false,
             datetime: new Date(),
+            chatBotOpen: false,
         };
     }
+
+    toggleChatBot = () => {
+        this.setState({ chatBotOpen: !this.state.chatBotOpen });
+    };
 
     componentDidMount = () => {
         setInterval(() => {
@@ -51,19 +59,40 @@ export class EmpMain extends Component {
                             </Card>
                         </div>
                         <div className="col-md-4">
-                            <EmpTasks
-                                userId={"5fb51f168c4cd2001797be6e"}
-                                organizationId={"5faf8c6860c04b0017a86356"}
-                            />
+                            <EmpTasks />
                         </div>
                         <div className="col-md-4">
-                            <EmpTodos userId={"5fb51f168c4cd2001797be6e"} />
+                            <EmpTodos />
+                        </div>
+                        <div className="col-md-4">
+                            <EmpTime />
                         </div>
                         <div className="col-md-4">
                             <EmpTime/>
                         </div>
                     </div>
                 </div>
+                {this.state.chatBotOpen ? (
+                    <iframe
+                        title="chatbot"
+                        src="https://chatbotnlp.herokuapp.com/"
+                        style={{ height: "1000px", width: "100%" }}
+                    />
+                ) : null}
+                <Button
+                    onClick={this.toggleChatBot}
+                    style={{
+                        height: 70,
+                        width: 70,
+                        borderRadius: 50,
+                        position: "fixed",
+                        bottom: 10,
+                        right: 10,
+                        backgroundColor: "#1876D2",
+                    }}
+                >
+                    <BsFillChatFill size={30} />
+                </Button>
             </>
         );
     }
