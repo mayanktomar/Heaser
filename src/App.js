@@ -10,6 +10,7 @@ import AddEmployee from "./Pages/AddEmployee";
 import EmpMain from "./Pages/EmpMain";
 import EmpAnnouncements from "./Pages/EmpAnnouncements";
 import EmpLeave from "./Pages/EmpLeave";
+import EmpResources from "./components/EmpResources";
 
 function App() {
     const [token, setToken] = useState(null);
@@ -76,6 +77,7 @@ function App() {
                             path="/announcement"
                             component={EmpAnnouncements}
                         />
+                        <PrivateRoute path="/resources" component={EmpResources}/>
                     </AuthContext.Provider>
                 </Switch>
             </BrowserRouter>

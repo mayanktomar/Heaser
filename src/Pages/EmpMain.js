@@ -5,6 +5,7 @@ import { CardBody, Card } from "reactstrap";
 import moment from "moment";
 import EmpTodos from "../components/EmpTodos";
 import Header from "../components/Header";
+import EmpTime from "../components/EmpTime";
 
 export class EmpMain extends Component {
     constructor(props) {
@@ -57,6 +58,9 @@ export class EmpMain extends Component {
                         </div>
                         <div className="col-md-4">
                             <EmpTodos userId={"5fb51f168c4cd2001797be6e"} />
+                        </div>
+                        <div className="col-md-4">
+                            <EmpTime/>
                         </div>
                     </div>
                 </div>
