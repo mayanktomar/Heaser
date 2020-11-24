@@ -21,15 +21,20 @@ import axios from "axios";
 import Header from "../components/Header";
 import Dummy from "../assets/dummy.jpg";
 import moment from "moment";
+import DatePicker from "react-datepicker";
 
 export class Profile extends Component {
     static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {
-            data: {
-                isModalOpen: false,
-            },
+            isModalOpen: false,
+            name: "",
+            email: "",
+            gender: "",
+            dob: new Date(),
+            data: {},
+            tags: [],
         };
     }
 
@@ -38,8 +43,15 @@ export class Profile extends Component {
         Axios.get(`/employee/get-specific-employee/${data}`).then((result) => {
             this.setState({
                 data: result.data.employee,
+                tags: result.data.employee.tags,
             });
             console.log(result.data);
+        });
+    };
+
+    handleDateChange = (date) => {
+        this.setState({
+            dob: date,
         });
     };
 
@@ -87,27 +99,6 @@ export class Profile extends Component {
     };
 
     render() {
-        let badge;
-        if (this.state.data.points <= 10) {
-            badge = "primary";
-        } else if (
-            this.state.data.points >= 10 &&
-            this.state.data.points <= 30
-        ) {
-            badge = "info";
-        } else if (
-            this.state.data.points >= 31 &&
-            this.state.data.points <= 60
-        ) {
-            badge = "success";
-        } else if (
-            this.state.data.points >= 60 &&
-            this.state.data.points <= 85
-        ) {
-            badge = "warning";
-        } else {
-            badge = "danger";
-        }
         return (
             <>
                 <Header {...this.props} />
@@ -122,30 +113,79 @@ export class Profile extends Component {
                         <ModalBody>
                             <Form>
                                 <FormGroup>
-                                    <Label for="exampleText">New weight</Label>
+                                    <Label
+                                        for="exampleText"
+                                        style={{
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Name
+                                    </Label>
                                     <Input
                                         type="text"
-                                        name="updatedweight"
+                                        name="name"
                                         id="exampleText"
+                                        placeholder="name of employee"
                                         onChange={this.onchange}
                                     />
                                 </FormGroup>
-                                <FormGroup>
-                                    <Label for="exampleText">New height</Label>
-                                    <Input
-                                        type="text"
-                                        name="updatedheight"
-                                        id="exampleText"
-                                        onChange={this.onchange}
-                                    />
+                                <FormGroup tag="fieldset">
+                                    <Label
+                                        style={{
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Gender
+                                    </Label>
+                                    <FormGroup check>
+                                        <Label check>
+                                            <Input
+                                                type="radio"
+                                                name="gender"
+                                                id="M"
+                                                onChange={this.onchange}
+                                            />{" "}
+                                            Male
+                                        </Label>
+                                    </FormGroup>
+                                    <FormGroup check>
+                                        <Label check>
+                                            <Input
+                                                type="radio"
+                                                name="gender"
+                                                id="F"
+                                                onChange={this.onchange}
+                                            />{" "}
+                                            Female
+                                        </Label>
+                                    </FormGroup>
+                                    <FormGroup check>
+                                        <Label check>
+                                            <Input
+                                                type="radio"
+                                                name="gender"
+                                                id="O"
+                                                onChange={this.onchange}
+                                            />{" "}
+                                            Other
+                                        </Label>
+                                    </FormGroup>
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="exampleText">New age</Label>
-                                    <Input
-                                        type="text"
-                                        name="updatedage"
-                                        id="exampleText"
-                                        onChange={this.onchange}
+                                    <Label
+                                        style={{
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Date Of Birth
+                                    </Label>{" "}
+                                    <br />
+                                    <DatePicker
+                                        selected={this.state.dob}
+                                        onChange={(date) =>
+                                            this.handleDateChange(date)
+                                        }
+                                        minDetail="decade"
                                     />
                                 </FormGroup>
                             </Form>
@@ -157,7 +197,10 @@ export class Profile extends Component {
                         </ModalFooter>
                     </Modal>
                     <div className="container profile">
-                        <h1 className="headings" style={{ paddingBottom: 50 }}>
+                        <h1
+                            className="headings"
+                            style={{ paddingBottom: 50, textAlign: "center" }}
+                        >
                             Profile
                         </h1>
                         <img
@@ -173,12 +216,22 @@ export class Profile extends Component {
                                 marginBottom: 10,
                             }}
                         />
-                        <h6 style={{ textAlign: "center", fontSize: 30 }}>
+                        <h6
+                            style={{
+                                textAlign: "center",
+                                fontSize: 30,
+                                color: "#1876d2",
+                            }}
+                        >
                             {this.state.data.name}
                         </h6>
                         <h6 style={{ textAlign: "center", color: "grey" }}>
                             {this.state.data.email}
                         </h6>
+                        <h6 style={{ textAlign: "center", color: "#1976d2" }}>
+                            {this.state.tags[0]}
+                        </h6>
+                        <br />
                         <h6 style={{ textAlign: "center" }}>
                             Gender -{" "}
                             {this.state.data.gender === "M" ? "Male" : "Female"}
@@ -187,18 +240,20 @@ export class Profile extends Component {
                             DOB -{" "}
                             {moment(this.state.data.dob).format("DD MMM, YYYY")}
                         </h6>
-
-                        <Button
-                            style={{
-                                backgroundColor: "#3e98c7",
-                                color: "black",
-                                display: "block",
-                                margin: "auto",
-                            }}
-                            onClick={this.toggleModal}
-                        >
-                            Update Profile
-                        </Button>
+                        {this.props.update ? (
+                            <Button
+                                style={{
+                                    backgroundColor: "#1876d2",
+                                    color: "white",
+                                    display: "block",
+                                    margin: "auto",
+                                    marginTop: 20,
+                                }}
+                                onClick={this.toggleModal}
+                            >
+                                Update Profile
+                            </Button>
+                        ) : null}
                         <div className="row">
                             {/* <div className="col-md-6">
                                 <Card>

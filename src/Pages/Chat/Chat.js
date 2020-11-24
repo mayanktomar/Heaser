@@ -236,7 +236,18 @@ export default class Chat extends Component {
                                 />
 
                                 <div class="chat-about">
-                                    <div class="chat-with">
+                                    <div
+                                        class="chat-with"
+                                        onClick={() => {
+                                            this.props.history.push(
+                                                `/employee/${this.state.selectedMember._id}`
+                                            );
+                                        }}
+                                        style={{
+                                            color: "#1976d2",
+                                            cursor: "pointer",
+                                        }}
+                                    >
                                         Chat with{" "}
                                         {this.state.selectedMember.name}
                                     </div>

@@ -122,7 +122,12 @@ export class Header extends Component {
                                                 );
                                             }}
                                         >
-                                            <NavLink style={{ color: "white" }}>
+                                            <NavLink
+                                                style={{
+                                                    color: "white",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
                                                 Workspace
                                             </NavLink>
                                         </NavItem>
@@ -133,7 +138,12 @@ export class Header extends Component {
                                                 );
                                             }}
                                         >
-                                            <NavLink style={{ color: "white" }}>
+                                            <NavLink
+                                                style={{
+                                                    color: "white",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
                                                 Leave
                                             </NavLink>
                                         </NavItem>
@@ -144,7 +154,12 @@ export class Header extends Component {
                                                 );
                                             }}
                                         >
-                                            <NavLink style={{ color: "white" }}>
+                                            <NavLink
+                                                style={{
+                                                    color: "white",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
                                                 Announcements
                                             </NavLink>
                                         </NavItem>
@@ -154,6 +169,9 @@ export class Header extends Component {
                                                     cursor: "pointer",
                                                     color: "white",
                                                     marginTop: 7,
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    justifyContent: "center",
                                                 }}
                                                 onClick={() => {
                                                     this.props.history.push(
@@ -161,7 +179,15 @@ export class Header extends Component {
                                                     );
                                                 }}
                                             >
-                                                <CgProfile size={22} /> Profile
+                                                <CgProfile size={22} />
+                                                <h6
+                                                    style={{
+                                                        marginLeft: 10,
+                                                        marginTop: 2,
+                                                    }}
+                                                >
+                                                    Profile
+                                                </h6>
                                             </div>
                                         </NavItem>
                                     </Nav>

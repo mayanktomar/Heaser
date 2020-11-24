@@ -80,7 +80,17 @@ function App() {
                             component={EmpAnnouncements}
                         />
                         <PrivateRoute path="/resources" component={EmpResources}/>
-                        <PrivateRoute path="/profile" component={Profile} />
+                        
+                        <PrivateRoute
+                            path="/profile"
+                            component={Profile}
+                            update={true}
+                        />
+                        <PrivateRoute
+                            path="/employee/:id"
+                            component={Profile}
+                            update={false}
+                        />
                     </AuthContext.Provider>
                 </Switch>
             </BrowserRouter>
