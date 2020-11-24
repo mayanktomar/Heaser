@@ -18,6 +18,7 @@ import { IoMdLogOut, IoIosNotifications, IoMdShare } from "react-icons/io";
 import { AuthContext } from "../Context/auth";
 import Axios from "axios";
 import NotificationModal from "./NotificationModal";
+import { CgProfile } from "react-icons/cg";
 
 export class Header extends Component {
     static contextType = AuthContext;
@@ -63,7 +64,6 @@ export class Header extends Component {
         let data = await localStorage.getItem("heaserType");
         let userId = await localStorage.getItem("userId");
         userId = userId === "null" ? JSON.parse(userId) : userId;
-        console.log(data, userId);
         if (userId) {
             if (data === "employee") this.getEmployeeNotification(userId);
             else this.getOrganizationNotification(userId);
@@ -115,10 +115,54 @@ export class Header extends Component {
                             this.context.token !== "null" ? (
                                 <>
                                     <Nav navbar>
-                                        <NavItem>
-                                            <NavLink href="/workspace">
+                                        <NavItem
+                                            onClick={() => {
+                                                this.props.history.push(
+                                                    "/workspace"
+                                                );
+                                            }}
+                                        >
+                                            <NavLink style={{ color: "white" }}>
                                                 Workspace
                                             </NavLink>
+                                        </NavItem>
+                                        <NavItem
+                                            onClick={() => {
+                                                this.props.history.push(
+                                                    "/leave"
+                                                );
+                                            }}
+                                        >
+                                            <NavLink style={{ color: "white" }}>
+                                                Leave
+                                            </NavLink>
+                                        </NavItem>
+                                        <NavItem
+                                            onClick={() => {
+                                                this.props.history.push(
+                                                    "/announcement"
+                                                );
+                                            }}
+                                        >
+                                            <NavLink style={{ color: "white" }}>
+                                                Announcements
+                                            </NavLink>
+                                        </NavItem>
+                                        <NavItem>
+                                            <div
+                                                style={{
+                                                    cursor: "pointer",
+                                                    color: "white",
+                                                    marginTop: 7,
+                                                }}
+                                                onClick={() => {
+                                                    this.props.history.push(
+                                                        "/profile"
+                                                    );
+                                                }}
+                                            >
+                                                <CgProfile size={22} /> Profile
+                                            </div>
                                         </NavItem>
                                     </Nav>
                                     <Nav navbar>

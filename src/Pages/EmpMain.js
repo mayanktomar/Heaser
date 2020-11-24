@@ -7,8 +7,10 @@ import EmpTodos from "../components/EmpTodos";
 import Header from "../components/Header";
 import { BsFillChatFill } from "react-icons/bs";
 import EmpTime from "../components/EmpTime";
+import { AuthContext } from "../Context/auth";
 
 export class EmpMain extends Component {
+    static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -57,13 +59,10 @@ export class EmpMain extends Component {
                             </Card>
                         </div>
                         <div className="col-md-4">
-                            <EmpTasks
-                                userId={"5fb51f168c4cd2001797be6e"}
-                                organizationId={"5faf8c6860c04b0017a86356"}
-                            />
+                            <EmpTasks />
                         </div>
                         <div className="col-md-4">
-                            <EmpTodos userId={"5fb51f168c4cd2001797be6e"} />
+                            <EmpTodos />
                         </div>
                         <div className="col-md-4">
                             <EmpTime />

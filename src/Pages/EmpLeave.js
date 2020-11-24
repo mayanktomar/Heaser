@@ -230,6 +230,7 @@ export class EmpLeave extends Component {
                                     <Label for="quantity">
                                         Start Date of leave
                                     </Label>
+                                    {"   "}
                                     <DatePicker
                                         selected={this.state.startDate}
                                         onChange={(date) =>
@@ -242,6 +243,7 @@ export class EmpLeave extends Component {
                                     <Label for="quantity">
                                         End Date of leave
                                     </Label>
+                                    {"   "}
                                     <DatePicker
                                         selected={this.state.endDate}
                                         onChange={(date) =>
@@ -333,7 +335,21 @@ export class EmpLeave extends Component {
                                                         <th>To</th>
                                                         <th>Status</th>
                                                     </tr>
-                                                    {displayleavesEmployees}
+                                                    {this.state.leaves.length >
+                                                    0 ? (
+                                                        displayleavesEmployees
+                                                    ) : (
+                                                        <p
+                                                            style={{
+                                                                textAlign:
+                                                                    "center",
+                                                                marginTop: 10,
+                                                                color: "grey",
+                                                            }}
+                                                        >
+                                                            No Leaves requested
+                                                        </p>
+                                                    )}
                                                 </Table>
                                             </CardText>
                                         </CardBody>
@@ -354,7 +370,21 @@ export class EmpLeave extends Component {
                                                         <th>To</th>
                                                         <th>Status</th>
                                                     </tr>
-                                                    {displayleavesOrg}
+                                                    {this.state.leaves.length >
+                                                    0 ? (
+                                                        displayleavesOrg
+                                                    ) : (
+                                                        <p
+                                                            style={{
+                                                                textAlign:
+                                                                    "center",
+                                                                marginTop: 10,
+                                                                color: "grey",
+                                                            }}
+                                                        >
+                                                            No Leaves requested
+                                                        </p>
+                                                    )}
                                                 </Table>
                                             </CardText>
                                         </CardBody>

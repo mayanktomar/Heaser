@@ -26,8 +26,12 @@ export default function EmpAnnouncements(props) {
     const { userId, data } = useAuthContext();
 
     useEffect(() => {
+        let heaserData = localStorage.getItem("heaserData");
+        heaserData = JSON.parse(heaserData);
         axios
-            .get(`/announcement/get-announcements-by-org/${data.organization}`)
+            .get(
+                `/announcement/get-announcements-by-org/${heaserData.organization}`
+            )
             .then(function (response) {
                 setList(response.data.data);
                 setLoading(false);

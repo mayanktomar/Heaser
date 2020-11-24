@@ -98,6 +98,10 @@
     margin: auto !important;
 }
 
+.empleave {
+    padding: 70px;
+}
+
 .empleave img {
     width: 100%;
     height: auto;
@@ -112,6 +116,10 @@
     text-align: center;
     margin-bottom: 10px;
     font-weight: bold;
+}
+
+.empannounce {
+    padding: 50px;
 }
 
 .empannounce .card {
