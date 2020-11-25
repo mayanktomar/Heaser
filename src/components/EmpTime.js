@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Button, Spinner, Card, CardBody, CardText, CardTitle, Table } from "reactstrap";
+import {
+    Button,
+    Spinner,
+    Card,
+    CardBody,
+    CardText,
+    CardTitle,
+    Table,
+} from "reactstrap";
 import queryString from "query-string";
 import Axios from "axios";
 import {
@@ -21,15 +29,15 @@ class EmpTime extends Component {
             access_token: "",
             type: null,
             refresh_token: "",
-            result:[],
-            totalDuration:0,
-            projects:[],
-            durations:[],
-            loadingDurations:true
+            result: [],
+            totalDuration: 0,
+            projects: [],
+            durations: [],
+            loadingDurations: true,
         };
     }
 
-    componentDidMount=async ()=> {
+    componentDidMount = async () => {
         let stor = localStorage.getItem("heaserWakatime");
         this.setState({ type: stor });
         let access_code = localStorage.getItem("heaserWakatimeAccess");
@@ -56,6 +64,7 @@ class EmpTime extends Component {
                             access_token: result.data.access_token,
                             refresh_token: result.data.refresh_token,
                         });
+                        window.location.reload();
                     })
                     .catch((err) => {
                         localStorage.removeItem("heaserWakatimeAccess");
@@ -102,95 +111,84 @@ class EmpTime extends Component {
                 .then((result) => {
                     console.log(result.data);
                     this.setState({
-                        result:result.data.data
-                    })
+                        result: result.data.data,
+                    });
                 })
                 .catch((err) => {
                     console.log(err);
                 });
 
-                await this.state.result.map((r)=>{
-                    const temp=this.state.projects;
-                    if (temp.indexOf(r.project)<0)
-                    {
-                        temp.push(r.project);
-                    }
-                    this.setState({
-                        totalDuration:((this.state.totalDuration*60)+r.duration)/60,
-                        projects:temp
-                    })
-                })
-
-                if (this.state.projects.length>0)
-                { 
-                   
-                    await this.state.projects.map(async (p)=>{
-                        const temp=this.state.durations;
-                        const temp1={};
-                        const data = this.state.result.filter((obj) => {
-                            return obj.project === p;
-                        });
-                        var t=0;
-                        await data.map((d)=>{
-                            t=t+d.duration
-                        })
-                        temp1["name"]=p;
-                        temp1["time"]=t;
-                        temp.push(temp1);
-                    console.log(temp)
-                    this.setState({
-                        durations:temp
-                    })
-                    this.setState({
-                        loadingDurations:false
-                    })
-                    })
-
-                    
+            await this.state.result.map((r) => {
+                const temp = this.state.projects;
+                if (temp.indexOf(r.project) < 0) {
+                    temp.push(r.project);
                 }
+                this.setState({
+                    totalDuration:
+                        (this.state.totalDuration * 60 + r.duration) / 60,
+                    projects: temp,
+                });
+            });
+
+            if (this.state.projects.length > 0) {
+                await this.state.projects.map(async (p) => {
+                    const temp = this.state.durations;
+                    const temp1 = {};
+                    const data = this.state.result.filter((obj) => {
+                        return obj.project === p;
+                    });
+                    var t = 0;
+                    await data.map((d) => {
+                        t = t + d.duration;
+                    });
+                    temp1["name"] = p;
+                    temp1["time"] = t;
+                    temp.push(temp1);
+                    console.log(temp);
+                    this.setState({
+                        durations: temp,
+                    });
+                    this.setState({
+                        loadingDurations: false,
+                    });
+                });
+            }
         }
-    }
+    };
 
     render() {
         let emoji;
 
         {
-           
-
-            if (this.state.totalDuration<60)
-            {
-                emoji="😐";
-            }
-            else if (this.state.totalDuration<120)
-            {
-                emoji="🙂";
-            }
-            else if (this.state.totalDuration<180)
-            {
-                emoji="😀";
-            }
-            else if (this.state.totalDuration<240)
-            {
-                emoji="😁";
-            }
-            else if (this.state.totalDuration<300)
-            {
-                emoji="😤";
-            }
-            else{
-                emoji="💪"
+            if (this.state.totalDuration < 60) {
+                emoji = "😐";
+            } else if (this.state.totalDuration < 120) {
+                emoji = "🙂";
+            } else if (this.state.totalDuration < 180) {
+                emoji = "😀";
+            } else if (this.state.totalDuration < 240) {
+                emoji = "😁";
+            } else if (this.state.totalDuration < 300) {
+                emoji = "😤";
+            } else {
+                emoji = "💪";
             }
         }
-       
-        const displayprojects=this.state.durations.map((d)=>{
-            return(
+
+        const displayprojects = this.state.durations.map((d) => {
+            return (
                 <tr>
                     <td>{d.name}</td>
-                    <td>{Math.ceil(d.time/60)}</td>
+                    <td>{Math.ceil(d.time / 60)}</td>
                 </tr>
-            )
-        })
-        const display=this.state.loadingDurations==true?<Spinner color="info"/>:displayprojects
+            );
+        });
+        const display =
+            this.state.loadingDurations == true ? (
+                <Spinner color="info" />
+            ) : (
+                displayprojects
+            );
         return this.state.type !== "first" ? (
             <Button
                 onClick={(e) => {
@@ -203,14 +201,13 @@ class EmpTime extends Component {
             >
                 Login to Wakatime
             </Button>
-        ) :
-        <div className="emptime">
-             <AnimatedProgressProvider
+        ) : (
+            <div className="emptime">
+                <AnimatedProgressProvider
                     valueStart={0}
                     valueEnd={
-                        this.state.totalDuration != 0 
-                            ? ((this.state.totalDuration) / 360 ) *
-                              100
+                        this.state.totalDuration != 0
+                            ? (this.state.totalDuration / 360) * 100
                             : 0
                     }
                     duration={1.4}
@@ -222,11 +219,9 @@ class EmpTime extends Component {
                             <CircularProgressbarWithChildren
                                 value={value}
                                 text={
-                                    `${Math.ceil(
-                                        (this.state.totalDuration)
-                                    )}m` + `${emoji}`
+                                    `${Math.ceil(this.state.totalDuration)}m` +
+                                    `${emoji}`
                                 }
-                                
                                 styles={buildStyles({ pathTransition: "none" })}
                             ></CircularProgressbarWithChildren>
                         );
@@ -243,17 +238,14 @@ class EmpTime extends Component {
                                 <tr>
                                     <th>Project</th>
                                     <th>Time(mins)</th>
-                                    
                                 </tr>
                                 {display}
                             </Table>
                         </CardText>
                     </CardBody>
                 </Card>
-        </div>
-        
-        
-        ;
+            </div>
+        );
     }
 }
 

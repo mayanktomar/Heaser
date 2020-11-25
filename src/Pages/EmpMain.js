@@ -70,15 +70,32 @@ export class EmpMain extends Component {
                         <div className="col-md-4">
                             <EmpTime {...this.props} />
                         </div>
-                       
                     </div>
                 </div>
                 {this.state.chatBotOpen ? (
-                    <iframe
-                        title="chatbot"
-                        src="https://chatbotnlp.herokuapp.com/"
-                        style={{ height: "1000px", width: "100%" }}
-                    />
+                    <div
+                        style={{
+                            borderRadius: 10,
+                            border: "1px solid gray",
+                            height: "500px",
+                            width: "420px",
+                            position: "absolute",
+                            bottom: 50,
+                            right: 10,
+                            overflow: "hidden",
+                            backgroundColor: "white",
+                        }}
+                    >
+                        <iframe
+                            title="chatbot"
+                            src="https://chatbotnlp.herokuapp.com/"
+                            style={{
+                                height: "500px",
+                                width: "100%",
+                                border: "none",
+                            }}
+                        />
+                    </div>
                 ) : null}
                 <Button
                     onClick={this.toggleChatBot}

@@ -22,6 +22,15 @@ import Header from "../components/Header";
 import Dummy from "../assets/dummy.jpg";
 import moment from "moment";
 import DatePicker from "react-datepicker";
+import {
+    AreaChart,
+    Area,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+} from "recharts";
 
 export class Profile extends Component {
     static contextType = AuthContext;
@@ -35,6 +44,7 @@ export class Profile extends Component {
             dob: new Date(),
             data: {},
             tags: [],
+            times: [],
         };
     }
 
@@ -45,7 +55,14 @@ export class Profile extends Component {
                 data: result.data.employee,
                 tags: result.data.employee.tags,
             });
-            console.log(result.data);
+        });
+        Axios.post(`/time/get-time-in-interval/${data}`, {
+            endDate: moment(new Date()).format("YYYY-MM-DD"),
+            startDate: moment(
+                new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+            ).format("YYYY-MM-DD"),
+        }).then((result) => {
+            this.setState({ times: result.data.data });
         });
     };
 
@@ -99,6 +116,14 @@ export class Profile extends Component {
     };
 
     render() {
+        const data = this.state.times
+            ? this.state.times.map((item) => {
+                  return {
+                      name: moment(item.day).format("DD MMM"),
+                      Time: item.total_time,
+                  };
+              })
+            : [];
         return (
             <>
                 <Header {...this.props} />
@@ -254,88 +279,33 @@ export class Profile extends Component {
                                 Update Profile
                             </Button>
                         ) : null}
-                        <div className="row">
-                            {/* <div className="col-md-6">
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle
-                                            style={{
-                                                color: "#ffe02c",
-                                                fontSize: 20,
-                                                fontWeight: "bold",
-                                            }}
-                                        >
-                                            Starting Weight
-                                        </CardTitle>
-                                        <hr />
-                                        <h2>{this.state.weight[0]} Kgs</h2>
-                                    </CardBody>
-                                </Card>
-                            </div>
-                            <div className="col-md-6">
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle
-                                            style={{
-                                                color: "#ffe02c",
-                                                fontSize: 20,
-                                                fontWeight: "bold",
-                                            }}
-                                        >
-                                            Current Weight
-                                        </CardTitle>
-                                        <hr />
-                                        <h2>
-                                            {
-                                                this.state.weight[
-                                                    this.state.weight.length - 1
-                                                ]
-                                            }{" "}
-                                            Kgs
-                                        </h2>
-                                    </CardBody>
-                                </Card>
-                            </div>
-                            <div className="col-md-6">
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle
-                                            style={{
-                                                color: "#ffe02c",
-                                                fontSize: 20,
-                                                fontWeight: "bold",
-                                            }}
-                                        >
-                                            Height
-                                        </CardTitle>
-                                        <hr />
-                                        <h2>{this.state.height[0]} feet</h2>
-                                    </CardBody>
-                                </Card>
-                            </div>
-                            <div className="col-md-6">
-                                <Card>
-                                    <CardBody>
-                                        <CardTitle
-                                            style={{
-                                                color: "#ffe02c",
-                                                fontSize: 20,
-                                                fontWeight: "bold",
-                                            }}
-                                        >
-                                            BMI
-                                        </CardTitle>
-                                        <hr />
-                                        <h2>
-                                            {(
-                                                this.state.weight[0] /
-                                                (this.state.height[0] *
-                                                    this.state.height[0])
-                                            ).toPrecision(4)}
-                                        </h2>
-                                    </CardBody>
-                                </Card>
-                            </div> */}
+                        <div
+                            className="row"
+                            style={{ marginLeft: "auto", marginRight: "auto" }}
+                        >
+                            <AreaChart
+                                width={500}
+                                height={300}
+                                data={data}
+                                margin={{
+                                    top: 5,
+                                    right: 30,
+                                    left: 20,
+                                    bottom: 10,
+                                }}
+                            >
+                                <Area
+                                    type="basis"
+                                    dataKey="Time"
+                                    stroke="#82ca9d"
+                                    strokeWidth={3}
+                                />
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" padding={{ top: 10 }} />
+                                <YAxis dataKey="Time" />
+                                <Tooltip />
+                                <Legend margin={{ bottom: 10 }} />
+                            </AreaChart>
                         </div>
 
                         <Table>

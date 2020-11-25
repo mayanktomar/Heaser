@@ -126,9 +126,6 @@ export default class Chat extends Component {
 
         const params =
             this.state.chatType === "organization" ? loadOrg : loadIndi;
-        const chats = [...this.state.chatMessages];
-        chats.push({ ...params, text: this.state.message });
-        this.setState({ chatMessages: chats, message: "" });
         ChatService.createMessage(params, () => {
             console.log("message sent");
         });
@@ -262,7 +259,7 @@ export default class Chat extends Component {
                             <div class="chat-history">
                                 <ul>
                                     {this.state.chatMessages.map((item) => {
-                                        return item.from ===
+                                        return item.from._id ===
                                             this.context.userId ? (
                                             <li
                                                 class="clearfix"
@@ -281,7 +278,7 @@ export default class Chat extends Component {
                                                     </span>{" "}
                                                     &nbsp; &nbsp;
                                                     <span class="message-data-name">
-                                                        {item.from}
+                                                        {item.from.name}
                                                     </span>{" "}
                                                     <i class="fa fa-circle me"></i>
                                                 </div>
@@ -299,7 +296,7 @@ export default class Chat extends Component {
                                                 <div class="message-data">
                                                     <span class="message-data-name">
                                                         <i class="fa fa-circle online"></i>{" "}
-                                                        {item.from}
+                                                        {item.from.name}
                                                     </span>
                                                     <span class="message-data-time">
                                                         {moment(
