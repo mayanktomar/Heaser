@@ -15,6 +15,7 @@ import Profile from "./Pages/Profile";
 import EmpResources from "./components/EmpResources";
 import ViewEmp from "./Pages/ViewEmp";
 import Onboarding from "./Pages/Onboarding";
+import Personality from "./Pages/Personality";
 
 function App() {
     const [token, setToken] = useState(null);
@@ -75,7 +76,7 @@ function App() {
                             path="/add-employee"
                             component={AddEmployee}
                         />
-                         <PrivateRoute
+                        <PrivateRoute
                             path="/view-employees"
                             component={ViewEmp}
                         />
@@ -85,12 +86,15 @@ function App() {
                             path="/announcement"
                             component={EmpAnnouncements}
                         />
-                          <PrivateRoute
+                        <PrivateRoute
                             path="/onboarding-portal"
                             component={Onboarding}
                         />
-                        <PrivateRoute path="/resources" component={EmpResources}/>
-                        
+                        <PrivateRoute
+                            path="/resources"
+                            component={EmpResources}
+                        />
+
                         <PrivateRoute
                             path="/profile"
                             component={Profile}
@@ -100,6 +104,10 @@ function App() {
                             path="/employee/:id"
                             component={Profile}
                             update={false}
+                        />
+                        <PrivateRoute
+                            path="/personality"
+                            component={Personality}
                         />
                     </AuthContext.Provider>
                 </Switch>

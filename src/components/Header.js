@@ -41,10 +41,24 @@ export class Header extends Component {
     getEmployeeNotification = async (userId) => {
         Axios.get(`/notification/get-employee-notification/${userId}`).then(
             (result) => {
+                const data = result.data.data.filter(
+                    (item) => item.seen === false
+                );
                 this.setState({
                     data: result.data.data,
-                    count: result.data.data.length,
+                    count: data.length,
                 });
+            }
+        );
+    };
+
+    markNotificationSeen = (id) => {
+        Axios.put(`/notification/mark-notification-seen/${id}`).then(
+            (result) => {
+                const data = [...this.state.data];
+                const idx = data.findIndex((item) => item._id === id);
+                data[idx].seen = true;
+                this.setState({ data: data, count: this.state.count - 1 });
             }
         );
     };
@@ -52,9 +66,12 @@ export class Header extends Component {
     getOrganizationNotification = async (userId) => {
         Axios.get(`/notification/get-organization-notification/${userId}`).then(
             (result) => {
+                const data = result.data.data.filter(
+                    (item) => item.seen === false
+                );
                 this.setState({
                     data: result.data.data,
-                    count: result.data.data.length,
+                    count: data.length,
                 });
             }
         );
@@ -126,6 +143,7 @@ export class Header extends Component {
                                                 style={{
                                                     color: "white",
                                                     cursor: "pointer",
+                                                    fontWeight: "bold",
                                                 }}
                                             >
                                                 Workspace
@@ -142,6 +160,7 @@ export class Header extends Component {
                                                 style={{
                                                     color: "white",
                                                     cursor: "pointer",
+                                                    fontWeight: "bold",
                                                 }}
                                             >
                                                 Leave
@@ -158,9 +177,27 @@ export class Header extends Component {
                                                 style={{
                                                     color: "white",
                                                     cursor: "pointer",
+                                                    fontWeight: "bold",
                                                 }}
                                             >
                                                 Announcements
+                                            </NavLink>
+                                        </NavItem>
+                                        <NavItem
+                                            onClick={() => {
+                                                this.props.history.push(
+                                                    "/personality"
+                                                );
+                                            }}
+                                        >
+                                            <NavLink
+                                                style={{
+                                                    color: "white",
+                                                    cursor: "pointer",
+                                                    fontWeight: "bold",
+                                                }}
+                                            >
+                                                Personality
                                             </NavLink>
                                         </NavItem>
                                         <NavItem>
@@ -172,6 +209,8 @@ export class Header extends Component {
                                                     display: "flex",
                                                     flexDirection: "row",
                                                     justifyContent: "center",
+                                                    marginLeft: 5,
+                                                    marginRight: 5,
                                                 }}
                                                 onClick={() => {
                                                     this.props.history.push(
@@ -179,15 +218,10 @@ export class Header extends Component {
                                                     );
                                                 }}
                                             >
-                                                <CgProfile size={22} />
-                                                <h6
-                                                    style={{
-                                                        marginLeft: 10,
-                                                        marginTop: 2,
-                                                    }}
-                                                >
-                                                    Profile
-                                                </h6>
+                                                <CgProfile
+                                                    size={22}
+                                                    style={{ marginTop: 1 }}
+                                                />
                                             </div>
                                         </NavItem>
                                     </Nav>
@@ -228,6 +262,7 @@ export class Header extends Component {
                     data={this.state.data}
                     isNotModalOpen={this.state.isNotModalOpen}
                     toggleNotModal={this.toggleNotModal}
+                    markNotificationSeen={this.markNotificationSeen}
                 />
             </>
         );
