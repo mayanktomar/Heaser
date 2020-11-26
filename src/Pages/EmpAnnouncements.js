@@ -23,14 +23,17 @@ export default function EmpAnnouncements(props) {
     const [desc, setDesc] = useState("");
     const [heading, setHeading] = useState("");
     const toggle = () => setModal(!modal);
-    const { userId, data } = useAuthContext();
+    const { userId, data, type } = useAuthContext();
 
     useEffect(() => {
         let heaserData = localStorage.getItem("heaserData");
+        let user = localStorage.getItem("userId");
         heaserData = JSON.parse(heaserData);
         axios
             .get(
-                `/announcement/get-announcements-by-org/${heaserData.organization}`
+                `/announcement/get-announcements-by-org/${
+                    type === "employee" ? heaserData.organization : user
+                }`
             )
             .then(function (response) {
                 setList(response.data.data);
@@ -39,7 +42,7 @@ export default function EmpAnnouncements(props) {
             .catch(function (error) {
                 console.log(error);
             });
-    }, []);
+    }, [type]);
 
     const modaldisplay = async (event) => {
         const data = list.filter((obj) => {

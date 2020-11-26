@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import bg1 from "../assets/bg1.jpg";
-import { Card, CardBody, CardText, CardTitle, Button } from "reactstrap";
+import { Card, CardBody, CardText, CardTitle, Button, Spinner } from "reactstrap";
 import Header from "../components/Header";
 import AnnouncementModal from "../components/AnnouncementModal";
 import { AuthContext } from "../Context/auth";
@@ -26,6 +26,7 @@ export class OrgDashboard extends Component {
             sunrise: undefined,
             sunset: undefined,
             errorMessage: undefined,
+            loadingweather:true
         };
     }
     getPosition = () => {
@@ -46,6 +47,7 @@ export class OrgDashboard extends Component {
           icon: data.weather[0].icon,
           sunrise: moment.unix(data.sys.sunrise).format("hh:mm a"),
           sunset: moment.unix(data.sys.sunset).format("hh:mm a"),
+          loadingweather:false
         })
       }
     componentDidMount=()=>{
@@ -125,8 +127,12 @@ export class OrgDashboard extends Component {
                                     </span>
                                     </div>
                                     <div className="col-md-3" style={{display:'flex',flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-                                    {this.state.icon?<img src={"http://openweathermap.org/img/w/"+this.state.icon+".png"} style={{verticalAlign:'top'}}/>:null}
-                                    <span style={{marginTop:'0px',fontWeight:'bold'}}>{this.state.temperatureC}degrees</span>
+                                        {this.state.loadingweather?<Spinner color="info"/>:
+                                        <><img src={"http://openweathermap.org/img/w/"+this.state.icon+".png"} style={{verticalAlign:'top'}}/>
+                                         <span style={{marginTop:'0px',fontWeight:'bold'}}>{this.state.temperatureC}degrees</span></>
+                                        }
+                                    {/* {this.state.icon?<img src={"http://openweathermap.org/img/w/"+this.state.icon+".png"} style={{verticalAlign:'top'}}/>:null}
+                                    <span style={{marginTop:'0px',fontWeight:'bold'}}>{this.state.temperatureC}degrees</span> */}
                                     </div>
                                     </div>
                                    
