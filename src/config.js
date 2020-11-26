@@ -1,1 +1,1 @@
-exports.apiUrl = "http://localhost:8080";
+exports.apiUrl = "https://heaser-backend.herokuapp.com/";
