@@ -13,6 +13,8 @@ import EmpLeave from "./Pages/EmpLeave";
 import Axios from "axios";
 import Profile from "./Pages/Profile";
 import EmpResources from "./components/EmpResources";
+import ViewEmp from "./Pages/ViewEmp";
+import Onboarding from "./Pages/Onboarding";
 
 function App() {
     const [token, setToken] = useState(null);
@@ -73,11 +75,19 @@ function App() {
                             path="/add-employee"
                             component={AddEmployee}
                         />
+                         <PrivateRoute
+                            path="/view-employees"
+                            component={ViewEmp}
+                        />
                         <PrivateRoute path="/task" component={EmpMain} />
                         <PrivateRoute path="/leave" component={EmpLeave} />
                         <PrivateRoute
                             path="/announcement"
                             component={EmpAnnouncements}
+                        />
+                          <PrivateRoute
+                            path="/onboarding-portal"
+                            component={Onboarding}
                         />
                         <PrivateRoute path="/resources" component={EmpResources}/>
                         

@@ -4,6 +4,9 @@ import { Card, CardBody, CardText, CardTitle, Button } from "reactstrap";
 import Header from "../components/Header";
 import AnnouncementModal from "../components/AnnouncementModal";
 import { AuthContext } from "../Context/auth";
+import moment from 'moment';
+import axios from 'axios';
+import Onboarding from "./Onboarding";
 
 export class OrgDashboard extends Component {
     static contextType = AuthContext;
@@ -11,46 +14,150 @@ export class OrgDashboard extends Component {
         super(props);
         this.state = {
             isAnnounceModalOpen: false,
+            datetime: new Date(),
+            employees:[],
+            isOnboardingModalOpen:false,
+            lat: undefined,
+            lon: undefined,
+            city: undefined,
+            temperatureC: undefined,
+            temperatureF: undefined,
+            icon: undefined,
+            sunrise: undefined,
+            sunset: undefined,
+            errorMessage: undefined,
         };
     }
+    getPosition = () => {
+        return new Promise(function (resolve, reject) {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+      }
+      getWeather = async (latitude, longitude) => {
+        const api_call = await fetch(`//api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${'f86adc19a202147fe436dd02e2985abb'}&units=metric`);
+        const data = await api_call.json();
+        console.log(data)
+        this.setState({
+          lat: latitude,
+          lon: longitude,
+          city: data.name,
+          temperatureC: Math.round(data.main.temp),
+          temperatureF: Math.round(data.main.temp * 1.8 + 32),
+          icon: data.weather[0].icon,
+          sunrise: moment.unix(data.sys.sunrise).format("hh:mm a"),
+          sunset: moment.unix(data.sys.sunset).format("hh:mm a"),
+        })
+      }
+    componentDidMount=()=>{
+        setInterval(() => {
+            this.setState({
+                datetime: new Date(),
+            });
+        }, 1000);
 
+        let data=localStorage.getItem("heaserData");
+        data=JSON.parse(data);
+
+        axios.get('/employee/get-employess-by-org-id/'+data._id)
+        .then( (response) => {
+          this.setState({
+              employees:response.data.data
+          })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+        this.getPosition()
+        .then((position) => {
+           this.getWeather(position.coords.latitude,     
+           position.coords.longitude)
+         })
+         .catch((err) => console.log(err.message));
+    }
     toggleAnnounceModal = () => {
         this.setState({ isAnnounceModalOpen: !this.state.isAnnounceModalOpen });
     };
+    toggleOnboardingModal=()=>{
+        this.setState({
+            isOnboardingModalOpen:!this.state.isOnboardingModalOpen
+        })
+    }
 
     render() {
+        let greeting;
+        if (moment(this.state.datetime).format('H')<12)
+        {
+            greeting="Good morning";
+        }
+        else if (moment(this.state.datetime).format('H')<17)
+        {
+            greeting="Good afternoon";
+        }
+        else
+        {
+            greeting="Good evening"
+        }
         return (
             <>
                 <Header {...this.props} />
                 <div className="container orgdash">
-                    <h2>Welcome, XYZ</h2>
-                    <br />
+                    {/* <h2>{greeting }{"👋 "}{this.context.data.name}</h2>
+                    <br /> */}
                     {/* <div className="row" style={{width:'100%'}}>
                     <img src={bg1}/>
                 </div> */}
-
+                    <h2>DASHBOARD</h2>
                     <div className="row">
+                        <div className="col-md-12">
+                        <Card className="timecard">
+                                <CardBody style={{padding:'0.5em'}}>
+                                    <div className="row" style={{padding:'0px',margin:'0px'}}>
+                                    <div className="col-md-9" style={{display:'flex',flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                                    <span style={{ fontWeight: "bold" }}>
+                                        {greeting}{" "}
+                                        {this.context.data &&
+                                            this.context.data.name}{"👋"}
+                                        , It is{" "}
+                                        {moment(this.state.datetime).format(
+                                            "MMMM Do YYYY, h:mm:ss a"
+                                        )}
+                                    </span>
+                                    </div>
+                                    <div className="col-md-3" style={{display:'flex',flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                                    {this.state.icon?<img src={"http://openweathermap.org/img/w/"+this.state.icon+".png"} style={{verticalAlign:'top'}}/>:null}
+                                    <span style={{marginTop:'0px',fontWeight:'bold'}}>{this.state.temperatureC}degrees</span>
+                                    </div>
+                                    </div>
+                                   
+                                   
+                                   
+                                </CardBody>
+                            </Card>
+                        </div>
+                   
                         <div className="col-md-4">
                             <Card>
                                 <CardBody>
                                     <CardTitle>Number of employees</CardTitle>
-                                    <CardText>12</CardText>
+                                    <CardText><h4>{this.state.employees.length}</h4></CardText>
+                                  
                                 </CardBody>
                             </Card>
                         </div>
                         <div className="col-md-4">
                             <Card>
                                 <CardBody>
-                                    <CardTitle>Number of employees</CardTitle>
-                                    <CardText>12</CardText>
+                                    <CardTitle>Number of  new employees</CardTitle>
+                                    <CardText><h4>0</h4></CardText>
                                 </CardBody>
                             </Card>
                         </div>
                         <div className="col-md-4">
                             <Card>
                                 <CardBody>
-                                    <CardTitle>Number of employees</CardTitle>
-                                    <CardText>12</CardText>
+                                    <CardTitle>Number of announcements</CardTitle>
+                                    <CardText><h4>6</h4></CardText>
                                 </CardBody>
                             </Card>
                         </div>
@@ -110,6 +217,11 @@ export class OrgDashboard extends Component {
                                     margin: "auto",
                                     color: "white",
                                 }}
+                                onClick={() => {
+                                    this.props.history.push(
+                                        "/view-employees"
+                                    );
+                                }}
                             >
                                 View/Modify Employees
                             </Button>
@@ -128,6 +240,7 @@ export class OrgDashboard extends Component {
                             </Button>
                             <br />
                             <Button
+                             onClick={this.toggleOnboardingModal}
                                 style={{
                                     backgroundColor: "#1976d2",
                                     width: "75%",
@@ -145,6 +258,7 @@ export class OrgDashboard extends Component {
                     isAnnounceModalOpen={this.state.isAnnounceModalOpen}
                     toggleAnnounceModal={this.toggleAnnounceModal}
                 />
+                <Onboarding isOnboardingModalOpen={this.state.isOnboardingModalOpen} toggleOnboardingModal={this.toggleOnboardingModal} employees={this.state.employees}/>
             </>
         );
     }

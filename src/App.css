@@ -74,9 +74,17 @@
 .empmain {
   padding-top: 2%;
 }
-
+.empmain h2 {
+  text-align: center;
+  /* margin-bottom: 10px; */
+  font-weight: bold;
+}
 .empmain .timecard {
-  border: 1px solid #dc3545;
+  /* border: 1px solid #dc3545; */
+  display: block;
+  box-shadow: 7.5px 7.5px 5px #aaa;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
 }
 
 .emptask .card {
@@ -164,4 +172,31 @@
   box-shadow: 7.5px 7.5px 5px #aaa;
   border: 1px solid #e4e4e4;
   border-radius: 10px;
+}
+
+.orgdash .timecard {
+  /* border: 1px solid #dc3545; */
+  display: block;
+  box-shadow: 7.5px 7.5px 5px #aaa;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+}
+
+.orgdash h2 {
+  padding-top: -5px;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bolder;
+}
+
+.orgdash h4 {
+  text-align: center;
+  font-weight: bold;
+}
+
+.empview h2 {
+  padding-top: -5px;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bolder;
 }

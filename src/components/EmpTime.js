@@ -25,7 +25,10 @@ class EmpTime extends Component {
             totalDuration:0,
             projects:[],
             durations:[],
-            loadingDurations:true
+            loadingDurations:true,
+            userTime:'',
+            timeExist:false,
+            timeId:''
         };
     }
 
@@ -148,6 +151,65 @@ class EmpTime extends Component {
 
                     
                 }
+
+                let timedata = await localStorage.getItem('heaserData');
+                timedata=JSON.parse(timedata);
+                Axios.post('/time/get-employee-time/'+timedata._id, {
+                   day:moment(new Date()).format("YYYY-MM-DD"),
+                  
+                 })
+                 .then( (response) => {
+                   if (response.data.data.length>0)
+                   {
+                       this.setState({
+                           userTime:response.data.data[0].total_time,
+                           timeExist:true,
+                           timeId:response.data.data[0]._id
+                       })
+                   }
+                console.log(response)
+                 })
+                 .catch(function (error) {
+                   console.log(error);
+                 });
+                
+                 if (this.state.timeExist==true)
+                 {
+                     
+                     Axios.put('/time/update-time-for-employee/'+this.state.timeId, {
+                       total_time:this.state.totalDuration
+                       
+                      })
+                      .then( (response) => {
+                       
+                     console.log(response)
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                      });
+                 }
+                 else
+                 {
+                    
+                     Axios.post('/time/create-time-for-employee/'+timedata._id, {
+                         day:moment(new Date()).format("YYYY-MM-DD"),
+                         total_time:this.state.totalDuration
+                       
+                      })
+                      .then( (response) => {
+                       
+                     console.log(response)
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                      });
+                 }
+                //  this.setState({
+                //      userTime:this.state.userTime+=parseInt(((this.state.runningtime/1000)/60)),
+                //      isRunning:false,
+                //      runningtime:0
+                     
+                //  })
         }
     }
 
@@ -193,6 +255,13 @@ class EmpTime extends Component {
         const display=this.state.loadingDurations==true?<Spinner color="info"/>:displayprojects
         return this.state.type !== "first" ? (
             <Button
+            style={{
+               
+                backgroundColor: "#1976d2",
+                color: "white",
+                display: "block",
+                margin: "auto",
+            }}
                 onClick={(e) => {
                     e.preventDefault();
                     this.setState({ type: "first" });
