@@ -8,13 +8,47 @@ import {
     ListGroupItem,
     ListGroupItemHeading,
 } from "reactstrap";
+import Axios from "axios";
 
 class NotificationModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: [],
+            count: 0,
         };
+    }
+
+    getEmployeeNotification = async (userId) => {
+        Axios.get(`/notification/get-employee-notification/${userId}`).then(
+            (result) => {
+                this.setState({
+                    data: result.data.data,
+                    count: result.data.data.length,
+                });
+            }
+        );
+    };
+
+    getOrganizationNotification = async (userId) => {
+        Axios.get(`/notification/get-organization-notification/${userId}`).then(
+            (result) => {
+                this.setState({
+                    data: result.data.data,
+                    count: result.data.data.length,
+                });
+            }
+        );
+    };
+
+    async componentDidMount() {
+        let data = await localStorage.getItem("heaserType");
+        let userId = await localStorage.getItem("userId");
+        userId = userId === "null" ? JSON.parse(userId) : userId;
+        if (userId) {
+            if (data === "employee") this.getEmployeeNotification(userId);
+            else this.getOrganizationNotification(userId);
+        }
     }
 
     render() {
@@ -34,12 +68,23 @@ class NotificationModal extends Component {
                                 <ListGroupItem
                                     style={{ cursor: "pointer" }}
                                     onClick={() => {
+                                        this.props.markNotificationSeen(
+                                            item._id
+                                        );
                                         this.props.history.push(
                                             "/" + item.operation.toLowerCase()
                                         );
                                     }}
                                 >
-                                    <ListGroupItemHeading>{`${item.message}`}</ListGroupItemHeading>
+                                    {item.seen ? (
+                                        <ListGroupItemHeading
+                                            style={{ color: "grey" }}
+                                        >
+                                            {item.message}
+                                        </ListGroupItemHeading>
+                                    ) : (
+                                        <ListGroupItemHeading>{`${item.message}`}</ListGroupItemHeading>
+                                    )}
                                 </ListGroupItem>
                             );
                         })}

@@ -137,7 +137,6 @@ export class EmpTasks extends Component {
         const data = this.state.employees.filter((obj) => {
             return obj.name === this.state.empname;
         });
-        console.log(this.state.enddate);
         const deadline = moment(this.state.enddate).toISOString();
 
         axios
@@ -149,9 +148,7 @@ export class EmpTasks extends Component {
                 startDate: moment(new Date()).toISOString(),
                 endDate: deadline,
             })
-            .then(function (response) {
-                console.log(response);
-            })
+            .then(function (response) {})
             .catch(function (error) {
                 alert("error");
             });
@@ -170,7 +167,7 @@ export class EmpTasks extends Component {
 
                 const index = data.findIndex((item) => item._id === id);
 
-               data[index].isCompleted=true;
+                data[index].isCompleted = true;
                 this.setState({
                     tasks: data,
                     taskcomp: this.state.taskcomp + 1,
@@ -186,14 +183,12 @@ export class EmpTasks extends Component {
     render() {
         const displaytasks = this.state.tasks.map((t) => {
             if (t.from._id != t.to) {
-               
                 const styling =
-                t.isCompleted == true
-                    ? { color: "#338333" }
-                    : { color: "#e2c10a" };
+                    t.isCompleted == true
+                        ? { color: "#338333" }
+                        : { color: "#e2c10a" };
                 return (
                     <tr>
-                        
                         <td
                             onClick={() => {
                                 this.props.history.push(
@@ -218,7 +213,6 @@ export class EmpTasks extends Component {
                                 <FcInfo />
                             </Button>
                         </td>
-                        
                     </tr>
                 );
             }
@@ -256,21 +250,24 @@ export class EmpTasks extends Component {
                     {this.state.taskInfo.comments !== "" ? (
                         <p>Comments - {this.state.taskInfo.comments}</p>
                     ) : null}
-                   {this.state.taskInfo.isCompleted==false?<FormGroup check>
-                        <Label check>
-                            <Input
-                                type="checkbox"
-                                checked={this.state.addComment}
-                                onClick={(e) => {
-                                    this.setState({
-                                        addComment: !this.state.addComment,
-                                    });
-                                }}
-                            />{" "}
-                            Add Comment
-                        </Label>
-                    </FormGroup>:null} 
-                    {this.state.addComment==true&&this.state.taskInfo.isCompleted==false ? (
+                    {this.state.taskInfo.isCompleted == false ? (
+                        <FormGroup check>
+                            <Label check>
+                                <Input
+                                    type="checkbox"
+                                    checked={this.state.addComment}
+                                    onClick={(e) => {
+                                        this.setState({
+                                            addComment: !this.state.addComment,
+                                        });
+                                    }}
+                                />{" "}
+                                Add Comment
+                            </Label>
+                        </FormGroup>
+                    ) : null}
+                    {this.state.addComment == true &&
+                    this.state.taskInfo.isCompleted == false ? (
                         <FormGroup>
                             <Label for="quantity">Comments (Optional)</Label>
                             <Input
@@ -404,18 +401,20 @@ export class EmpTasks extends Component {
                     <ModalBody>
                         {displayModal}
 
-                       {this.state.taskInfo.isCompleted==false?<Button
-                            style={{
-                                backgroundColor: "#3e98c7",
-                                width: "50%",
-                                color: "white",
-                                display: "block",
-                                margin: "auto",
-                            }}
-                            onClick={this.onDelete}
-                        >
-                            Mark as completed
-                        </Button>:null} 
+                        {this.state.taskInfo.isCompleted == false ? (
+                            <Button
+                                style={{
+                                    backgroundColor: "#3e98c7",
+                                    width: "50%",
+                                    color: "white",
+                                    display: "block",
+                                    margin: "auto",
+                                }}
+                                onClick={this.onDelete}
+                            >
+                                Mark as completed
+                            </Button>
+                        ) : null}
                     </ModalBody>
                 </Modal>
                 <AnimatedProgressProvider
@@ -460,7 +459,6 @@ export class EmpTasks extends Component {
                                     <th>From</th>
                                     <th>Task</th>
                                     <th>info</th>
-                                    
                                 </tr>
                                 {display}
                             </Table>

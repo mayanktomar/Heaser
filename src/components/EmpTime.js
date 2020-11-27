@@ -29,14 +29,14 @@ class EmpTime extends Component {
             access_token: "",
             type: null,
             refresh_token: "",
-            result:[],
-            totalDuration:0,
-            projects:[],
-            durations:[],
-            loadingDurations:true,
-            userTime:'',
-            timeExist:false,
-            timeId:''
+            result: [],
+            totalDuration: 0,
+            projects: [],
+            durations: [],
+            loadingDurations: true,
+            userTime: "",
+            timeExist: false,
+            timeId: "",
         };
     }
 
@@ -112,7 +112,6 @@ class EmpTime extends Component {
         } else {
             await Axios.get(`/wakatime/get-projects/${access_code}`)
                 .then((result) => {
-                    console.log(result.data);
                     this.setState({
                         result: result.data.data,
                     });
@@ -147,20 +146,35 @@ class EmpTime extends Component {
                     temp1["name"] = p;
                     temp1["time"] = t;
                     temp.push(temp1);
-                    console.log(temp);
                     this.setState({
                         durations: temp,
                     });
                     this.setState({
-                        loadingDurations:false
-                    })
-                    })
+                        loadingDurations: false,
+                    });
+                });
+            }
 
-                    
-                }
+            let timedata = await localStorage.getItem("heaserData");
+            timedata = JSON.parse(timedata);
+            Axios.post("/time/get-employee-time/" + timedata._id, {
+                day: moment(new Date()).format("YYYY-MM-DD"),
+            })
+                .then((response) => {
+                    if (response.data.data.length > 0) {
+                        this.setState({
+                            userTime: response.data.data[0].total_time,
+                            timeExist: true,
+                            timeId: response.data.data[0]._id,
+                        });
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
 
-                let timedata = await localStorage.getItem('heaserData');
-                timedata=JSON.parse(timedata);
+               
+              
                 await Axios.post('/time/get-employee-time/'+timedata._id, {
                    day:moment(new Date()).format("YYYY-MM-DD"),
                   
@@ -210,14 +224,14 @@ class EmpTime extends Component {
                       })
                       .catch(function (error) {
                         console.log(error);
-                      });
-                 }
-                //  this.setState({
-                //      userTime:this.state.userTime+=parseInt(((this.state.runningtime/1000)/60)),
-                //      isRunning:false,
-                //      runningtime:0
-                     
-                //  })
+                    });
+            }
+            //  this.setState({
+            //      userTime:this.state.userTime+=parseInt(((this.state.runningtime/1000)/60)),
+            //      isRunning:false,
+            //      runningtime:0
+
+            //  })
         }
     };
 
@@ -256,13 +270,12 @@ class EmpTime extends Component {
             );
         return this.state.type !== "first" ? (
             <Button
-            style={{
-               
-                backgroundColor: "#1976d2",
-                color: "white",
-                display: "block",
-                margin: "auto",
-            }}
+                style={{
+                    backgroundColor: "#1976d2",
+                    color: "white",
+                    display: "block",
+                    margin: "auto",
+                }}
                 onClick={(e) => {
                     e.preventDefault();
                     this.setState({ type: "first" });

@@ -46,7 +46,7 @@ export class EmpTodos extends Component {
             taskdesc: "",
             enddate: new Date(),
             isAllotModalOpen: false,
-            checktodos:false
+            checktodos: false,
         };
     }
 
@@ -105,8 +105,6 @@ export class EmpTodos extends Component {
     onEndDateChange = (enddate) => this.setState({ enddate });
 
     onSubmit = async () => {
-        console.log(this.state.enddate);
-
         await axios
             .post("/task/create-task", {
                 from: this.context.userId,
@@ -117,7 +115,6 @@ export class EmpTodos extends Component {
                 endDate: moment(this.state.enddate).format("YYYY-MM-DD H:mm"),
             })
             .then((response) => {
-                console.log(response);
                 const data = [...this.state.todos];
                 data.push({
                     _id: response.data.task._id,
@@ -147,7 +144,6 @@ export class EmpTodos extends Component {
 
     onDelete = async (event) => {
         const id = event.currentTarget.id;
-        console.log(id);
         await axios
             .put("/task/mark-task-as-completed/" + id)
             .then((response) => {
@@ -175,9 +171,7 @@ export class EmpTodos extends Component {
                 moment(t.endDate).format("YYYY-MM-DD") ==
                     moment(new Date()).format("YYYY-MM-DD")
             ) {
-                
                 return (
-                    
                     <tr>
                         <td>{t.heading}</td>
 
@@ -212,7 +206,6 @@ export class EmpTodos extends Component {
         let emoji;
 
         {
-           
             if (
                 Math.round(
                     (this.state.todoscomp / this.state.todoslength) * 100 <= 25

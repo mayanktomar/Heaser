@@ -30,6 +30,13 @@ import {
     CartesianGrid,
     Tooltip,
     Legend,
+    Radar,
+    RadarChart,
+    PolarGrid,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+    Line,
+    LineChart,
 } from "recharts";
 
 export class Profile extends Component {
@@ -80,7 +87,6 @@ export class Profile extends Component {
         const target = event.target;
         const name = target.name;
         const value = target.value;
-        console.log(name);
         this.setState({
             [name]: value,
         });
@@ -124,6 +130,38 @@ export class Profile extends Component {
                   };
               })
             : [];
+        const data1 = [
+            {
+                subject: "Puntual",
+                A: 120,
+                B: 110,
+                fullMark: 150,
+            },
+            {
+                subject: "Hard Working",
+                A: 98,
+                B: 130,
+                fullMark: 150,
+            },
+            {
+                subject: "Humble",
+                A: 86,
+                B: 130,
+                fullMark: 150,
+            },
+            {
+                subject: "Polite",
+                A: 99,
+                B: 100,
+                fullMark: 150,
+            },
+            {
+                subject: "Obedient",
+                A: 85,
+                B: 90,
+                fullMark: 150,
+            },
+        ];
         return (
             <>
                 <Header {...this.props} />
@@ -216,8 +254,6 @@ export class Profile extends Component {
                             </Form>
                         </ModalBody>
                         <ModalFooter>
-                            {/* <Button color="primary" onClick={toggle}>Do Something</Button>{' '}
-                    <Button color="secondary" onClick={toggle}>Cancel</Button> */}
                             <Button onClick={this.onSubmit}>Update</Button>
                         </ModalFooter>
                     </Modal>
@@ -279,35 +315,52 @@ export class Profile extends Component {
                                 Update Profile
                             </Button>
                         ) : null}
-                        <div
-                            className="row"
-                            style={{ marginLeft: "auto", marginRight: "auto" }}
-                        >
-                            <AreaChart
-                                width={500}
-                                height={300}
-                                data={data}
-                                margin={{
-                                    top: 5,
-                                    right: 30,
-                                    left: 20,
-                                    bottom: 10,
+                        <div className="row" style={{ margin: 0, padding: 0 }}>
+                            <div className="col-6" style={{ paddingTop: 90 }}>
+                                <LineChart width={500} height={300} data={data}>
+                                    <Line
+                                        type="linear"
+                                        dataKey="Time"
+                                        stroke="#82ca9d"
+                                        strokeWidth={3}
+                                    />
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis
+                                        dataKey="name"
+                                        padding={{ top: 10 }}
+                                    />
+                                    <YAxis dataKey="Time" />
+                                    <Tooltip />
+                                    <Legend margin={{ bottom: 10 }} />
+                                </LineChart>
+                            </div>
+                            <div
+                                className="col-6"
+                                style={{
+                                    paddingLeft: "auto",
+                                    paddingRight: "auto",
                                 }}
                             >
-                                <Area
-                                    type="basis"
-                                    dataKey="Time"
-                                    stroke="#82ca9d"
-                                    strokeWidth={3}
-                                />
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" padding={{ top: 10 }} />
-                                <YAxis dataKey="Time" />
-                                <Tooltip />
-                                <Legend margin={{ bottom: 10 }} />
-                            </AreaChart>
+                                <RadarChart
+                                    outerRadius={120}
+                                    width={450}
+                                    height={450}
+                                    data={data1}
+                                    margin={{ left: "auto", right: "auto" }}
+                                >
+                                    <PolarGrid />
+                                    <PolarAngleAxis dataKey="subject" />
+                                    <PolarRadiusAxis />
+                                    <Radar
+                                        name="Mike"
+                                        dataKey="A"
+                                        stroke="#8884d8"
+                                        fill="#8884d8"
+                                        fillOpacity={0.6}
+                                    />
+                                </RadarChart>
+                            </div>
                         </div>
-
                         <Table>
                             {/* <tbody>
                         <tr>
