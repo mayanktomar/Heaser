@@ -161,7 +161,7 @@ class EmpTime extends Component {
 
                 let timedata = await localStorage.getItem('heaserData');
                 timedata=JSON.parse(timedata);
-                Axios.post('/time/get-employee-time/'+timedata._id, {
+                await Axios.post('/time/get-employee-time/'+timedata._id, {
                    day:moment(new Date()).format("YYYY-MM-DD"),
                   
                  })
@@ -182,8 +182,9 @@ class EmpTime extends Component {
                 
                  if (this.state.timeExist==true)
                  {
+                     console.log("hello")
                      
-                     Axios.put('/time/update-time-for-employee/'+this.state.timeId, {
+                    await  Axios.put('/time/update-time-for-employee/'+this.state.timeId, {
                        total_time:this.state.totalDuration
                        
                       })
@@ -198,7 +199,7 @@ class EmpTime extends Component {
                  else
                  {
                     
-                     Axios.post('/time/create-time-for-employee/'+timedata._id, {
+                    await Axios.post('/time/create-time-for-employee/'+timedata._id, {
                          day:moment(new Date()).format("YYYY-MM-DD"),
                          total_time:this.state.totalDuration
                        

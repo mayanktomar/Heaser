@@ -246,6 +246,7 @@ export class OrgDashboard extends Component {
                             </Button>
                             <br />
                             <Button
+
                              onClick={this.toggleOnboardingModal}
                                 style={{
                                     backgroundColor: "#1976d2",
@@ -255,7 +256,24 @@ export class OrgDashboard extends Component {
                                     color: "white",
                                 }}
                             >
-                                Onboarding portal
+                               Upload resources
+                            </Button>
+                            <br/>
+                            <Button
+                                style={{
+                                    backgroundColor: "#1976d2",
+                                    width: "75%",
+                                    display: "block",
+                                    margin: "auto",
+                                    color: "white",
+                                }}
+                                onClick={() => {
+                                    this.props.history.push(
+                                        "/onboarding-portal"
+                                    );
+                                }}
+                            >
+                                Onboarding Portal
                             </Button>
                         </div>
                     </div>

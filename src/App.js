@@ -15,6 +15,7 @@ import Profile from "./Pages/Profile";
 import EmpResources from "./components/EmpResources";
 import ViewEmp from "./Pages/ViewEmp";
 import Onboarding from "./Pages/Onboarding";
+import WelcomeKit from "./Pages/WelcomeKit";
 
 function App() {
     const [token, setToken] = useState(null);
@@ -87,7 +88,7 @@ function App() {
                         />
                           <PrivateRoute
                             path="/onboarding-portal"
-                            component={Onboarding}
+                            component={WelcomeKit}
                         />
                         <PrivateRoute path="/resources" component={EmpResources}/>
                         

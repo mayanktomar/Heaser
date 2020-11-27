@@ -421,10 +421,10 @@ export class EmpTasks extends Component {
                 <AnimatedProgressProvider
                     valueStart={0}
                     valueEnd={
-                        this.state.taskcomp != 0 && this.state.tasklength != 0
+                        this.state.taskcomp != this.state.tasklength
                             ? (this.state.taskcomp / this.state.tasklength) *
                               100
-                            : 0
+                            : 100
                     }
                     duration={1.4}
                     easingFunction={easeQuadInOut}
@@ -435,11 +435,11 @@ export class EmpTasks extends Component {
                             <CircularProgressbarWithChildren
                                 value={value}
                                 text={
-                                    `${this.state.tasklength!=0?Math.round(
+                                    `${this.state.tasklength!=this.state.taskcomp?Math.round(
                                         (this.state.taskcomp /
                                             this.state.tasklength) *
                                             100
-                                    ):0}%` + `${emoji}`
+                                    ):100}%` + `${emoji}`
                                 }
                                 /* This is important to include, because if you're fully managing the
                                 animation yourself, you'll want to disable the CSS animation. */

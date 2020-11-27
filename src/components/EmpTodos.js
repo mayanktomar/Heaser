@@ -299,10 +299,10 @@ export class EmpTodos extends Component {
                 <AnimatedProgressProvider
                     valueStart={0}
                     valueEnd={
-                        this.state.todoscomp != 0 && this.state.todoslength != 0
+                        this.state.todoscomp != this.state.todoslength
                             ? (this.state.todoscomp / this.state.todoslength) *
                               100
-                            : 0
+                            : 100
                     }
                     duration={1.4}
                     easingFunction={easeQuadInOut}
@@ -314,13 +314,13 @@ export class EmpTodos extends Component {
                                 value={value}
                                 text={
                                     `${
-                                        this.state.todoslength != 0
+                                        this.state.todoslength != this.state.todoscomp
                                             ? Math.round(
                                                   (this.state.todoscomp /
                                                       this.state.todoslength) *
                                                       100
                                               )
-                                            : 0
+                                            : 100
                                     }%` + `${emoji}`
                                 }
                                 /* This is important to include, because if you're fully managing the
