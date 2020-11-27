@@ -153,9 +153,9 @@ export class EmpLeave extends Component {
     render() {
         const displayleavesEmployees = this.state.leaves.map((l) => {
             const temp =
-                l.accepted == true ? "Accepted" : "Waiting for approval";
+                l.accepted === true ? "Accepted" : "Waiting for approval";
             const styling =
-                l.accepted == true
+                l.accepted === true
                     ? { color: "#338333" }
                     : { color: "#e2c10a" };
             return (
@@ -197,15 +197,16 @@ export class EmpLeave extends Component {
         });
 
         const displaycheck =
-            this.state.leaves.length == 0 ? (
+            this.state.leaves.length === 0 ? (
                 <p>No applied leaves</p>
             ) : this.context.userId === "employee" ? (
                 displayleavesEmployees
             ) : (
                 displayleavesOrg
             );
+
         const display =
-            this.state.loading == true ? (
+            this.state.loading === true ? (
                 <Spinner color="info" />
             ) : (
                 displaycheck
@@ -393,7 +394,7 @@ export class EmpLeave extends Component {
                             )}
                         </div>
                         <div className="col-md-6">
-                            <img src={empleave} />
+                            <img alt="empleave" src={empleave} />
                         </div>
                     </div>
                 </div>

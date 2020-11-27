@@ -1,5 +1,5 @@
-export const Motivation=[
+export const Motivation = [
     {
-        name:"../assets"
-    }
-]
+        name: "../assets",
+    },
+];

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Button, Row, Col } from "reactstrap";
+import { Button } from "reactstrap";
 import vector1 from "../assets/vector1.svg";
 import RegisterModal from "../components/RegisterModal";
-import LoginModal from "../components/LoginModal";
 import Header from "../components/Header";
 import EmployeeLoginModal from "../components/EmployeeLogin";
 
@@ -66,7 +65,7 @@ export class AskLogin extends Component {
                             </Button>
                         </div>
                         <div class="col-md-6" style={{ paddingBottom: 30 }}>
-                            <img src={vector1} />
+                            <img alt="vector1" src={vector1} />
                         </div>
                     </div>
                 </div>

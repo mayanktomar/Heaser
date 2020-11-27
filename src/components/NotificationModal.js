@@ -59,7 +59,7 @@ class NotificationModal extends Component {
             >
                 <ModalHeader toggle={this.props.toggleNotModal}>
                     Notifications{" "}
-                    <Badge color="secondary">{this.props.data.length}</Badge>
+                    <Badge color="secondary">{this.props.count}</Badge>
                 </ModalHeader>
                 <ModalBody style={{ height: 500, overflowY: "scroll" }}>
                     <ListGroup>

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { Component } from "react";
 import "./chat.scss";
-import { AuthContext, useAuthContext } from "../../Context/auth";
+import { AuthContext } from "../../Context/auth";
 import moment from "moment";
 import Header from "../../components/Header";
 import { ChatService } from "../../chat/index";
@@ -345,7 +345,11 @@ export default class Chat extends Component {
                             <h4 style={{ color: "grey" }}>
                                 Select a Chat to continue
                             </h4>
-                            <img src={ChatImage} style={styles.image} />
+                            <img
+                                alt="chat"
+                                src={ChatImage}
+                                style={styles.image}
+                            />
                         </div>
                     )}
                 </div>

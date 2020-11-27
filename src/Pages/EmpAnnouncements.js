@@ -5,7 +5,6 @@ import {
     CardBody,
     CardText,
     Spinner,
-    Table,
     Card,
     Modal,
     ModalHeader,
@@ -23,12 +22,14 @@ export default function EmpAnnouncements(props) {
     const [desc, setDesc] = useState("");
     const [heading, setHeading] = useState("");
     const toggle = () => setModal(!modal);
-    const { userId, data, type } = useAuthContext();
+    const { type } = useAuthContext();
 
     useEffect(() => {
         let heaserData = localStorage.getItem("heaserData");
+
         let user = localStorage.getItem("userId");
         heaserData = JSON.parse(heaserData);
+
         axios
             .get(
                 `/announcement/get-announcements-by-org/${
@@ -54,6 +55,7 @@ export default function EmpAnnouncements(props) {
 
         toggle();
     };
+
     const displaylist = list.map((l) => {
         return (
             <Card>
@@ -83,8 +85,8 @@ export default function EmpAnnouncements(props) {
         );
     });
     const displaycheck =
-        list.length == 0 ? <p>There are no announcements</p> : displaylist;
-    const display = loading == true ? <Spinner color="info" /> : displaycheck;
+        list.length === 0 ? <p>There are no announcements</p> : displaylist;
+    const display = loading === true ? <Spinner color="info" /> : displaycheck;
     return (
         <>
             <Header {...props} />
@@ -102,7 +104,7 @@ export default function EmpAnnouncements(props) {
                 <div className="row">
                     <div className="col-md-6">{display}</div>
                     <div className="col-md-6">
-                        <img src={empannounce} />
+                        <img alt="empannounce" src={empannounce} />
                     </div>
                 </div>
             </div>

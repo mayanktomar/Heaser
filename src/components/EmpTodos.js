@@ -17,11 +17,8 @@ import {
     Input,
     ModalFooter,
 } from "reactstrap";
-import { FcInfo } from "react-icons/fc";
 import { AiOutlineCheckCircle } from "react-icons/ai";
-import SelectInput from "@material-ui/core/Select/SelectInput";
 import {
-    CircularProgressbar,
     buildStyles,
     CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
@@ -69,7 +66,7 @@ export class EmpTodos extends Component {
         await this.state.todos.map((t) => {
             if (
                 t.from._id === t.to &&
-                moment(t.endDate).format("YYYY-MM-DD") ==
+                moment(t.endDate).format("YYYY-MM-DD") ===
                     moment(new Date()).format("YYYY-MM-DD")
             ) {
                 this.setState({
@@ -78,8 +75,8 @@ export class EmpTodos extends Component {
             }
             if (
                 t.from._id === t.to &&
-                t.isCompleted == true &&
-                moment(t.endDate).format("YYYY-MM-DD") ==
+                t.isCompleted === true &&
+                moment(t.endDate).format("YYYY-MM-DD") ===
                     moment(new Date()).format("YYYY-MM-DD")
             ) {
                 this.setState({
@@ -167,8 +164,8 @@ export class EmpTodos extends Component {
         const displaytasks = this.state.todos.map((t) => {
             if (
                 t.from._id === t.to &&
-                t.isCompleted == false &&
-                moment(t.endDate).format("YYYY-MM-DD") ==
+                t.isCompleted === false &&
+                moment(t.endDate).format("YYYY-MM-DD") ===
                     moment(new Date()).format("YYYY-MM-DD")
             ) {
                 return (
@@ -196,7 +193,7 @@ export class EmpTodos extends Component {
             return <div></div>;
         });
         const display =
-            this.state.loading == true ? (
+            this.state.loading === true ? (
                 <Spinner color="info" />
             ) : (
                 displaytasks
@@ -292,7 +289,7 @@ export class EmpTodos extends Component {
                 <AnimatedProgressProvider
                     valueStart={0}
                     valueEnd={
-                        this.state.todoscomp != this.state.todoslength
+                        this.state.todoscomp !== this.state.todoslength
                             ? (this.state.todoscomp / this.state.todoslength) *
                               100
                             : 100
@@ -307,7 +304,8 @@ export class EmpTodos extends Component {
                                 value={value}
                                 text={
                                     `${
-                                        this.state.todoslength != this.state.todoscomp
+                                        this.state.todoslength !==
+                                        this.state.todoscomp
                                             ? Math.round(
                                                   (this.state.todoscomp /
                                                       this.state.todoslength) *

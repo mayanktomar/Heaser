@@ -1,11 +1,11 @@
 .navbar-dark {
-  background-color: #1976d2;
+    background-color: #1976d2;
 }
 
 .card-title {
-  font-weight: bold;
-  text-align: center;
-  font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2rem;
 }
 
 /* .card-text {
@@ -13,19 +13,19 @@
   } */
 
 .row {
-  margin-bottom: 5%;
+    margin-bottom: 5%;
 }
 .col-md-12 {
-  margin-bottom: 5%;
+    margin-bottom: 5%;
 }
 .loginhead {
-  padding-top: 10%;
+    padding-top: 10%;
 }
 
 .loginhead .btn-secondary {
-  display: inline-block;
-  border-color: #1976d2;
-  border-radius: 10px;
+    display: inline-block;
+    border-color: #1976d2;
+    border-radius: 10px;
 }
 
 /* .btn-secondary:hover {
@@ -33,170 +33,168 @@
   } */
 
 .loginhead img {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto;
 }
 
 .orgdash {
-  padding-top: 5%;
+    padding-top: 5%;
 }
 
 .orgdash h2 {
-  text-align: center;
-  font-weight: bold;
+    text-align: center;
+    font-weight: bold;
 }
 
-.orgdash {
-  /* background-image: url(assets/bg1.jpg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-  
-    height: 100%; */
-  /* height: 200px;
-    width: 75%; */
-  /* background-color: #9edaff; */
-}
 .row {
-  padding-top: 5%;
+    padding-top: 5%;
 }
+
+.empadd {
+    padding-top: 70px;
+}
+
 .empadd img {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto;
 }
 
 .empadd h2 {
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .empmain {
-  padding-top: 2%;
+    padding-top: 2%;
 }
 .empmain h2 {
-  text-align: center;
-  /* margin-bottom: 10px; */
-  font-weight: bold;
+    text-align: center;
+    /* margin-bottom: 10px; */
+    font-weight: bold;
 }
 .empmain .timecard {
-  /* border: 1px solid #dc3545; */
-  display: block;
-  box-shadow: 7.5px 7.5px 5px #aaa;
-  border: 1px solid #e4e4e4;
-  border-radius: 10px;
+    /* border: 1px solid #dc3545; */
+    display: block;
+    box-shadow: 7.5px 7.5px 5px #aaa;
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
 }
 
 .emptask .card {
-  border: 2px solid #3e98c7;
-  border-radius: 10%;
-  height: 300px;
-  overflow-y: scroll;
+    border: 2px solid #3e98c7;
+    border-radius: 10%;
+    height: 300px;
+    overflow-y: scroll;
 }
 .emptodos .card {
-  border: 2px solid #3e98c7;
-  border-radius: 10%;
-  height: 300px;
-  overflow-y: scroll;
+    border: 2px solid #3e98c7;
+    border-radius: 10%;
+    height: 300px;
+    overflow-y: scroll;
 }
 .emptime .card {
-  border: 2px solid #3e98c7;
-  border-radius: 10%;
-  height: 300px;
-  overflow-y: scroll;
+    border: 2px solid #3e98c7;
+    border-radius: 10%;
+    height: 300px;
+    overflow-y: scroll;
 }
 
 .CircularProgressbar {
-  width: 50% !important;
-  display: block !important;
-  margin: auto !important;
+    width: 50% !important;
+    display: block !important;
+    margin: auto !important;
 }
 
 .empleave {
-  padding: 70px;
+    padding: 70px;
 }
 
 .empleave img {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto;
 }
 
 .empleave card {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .empleave h2 {
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .empannounce {
-  padding: 50px;
+    padding: 50px;
 }
 
 .empannounce .card {
-  height: 130px;
-  margin-top: 5px;
-  margin-bottom: 20px;
-  display: block;
-  box-shadow: 7.5px 7.5px 5px #aaa;
-  border: 1px solid #e4e4e4;
-  border-radius: 10px;
+    height: 130px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    display: block;
+    box-shadow: 7.5px 7.5px 5px #aaa;
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
 }
 .empannounce img {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto;
 }
 
 .empannounce h2 {
-  padding-top: 15px;
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: bold;
+    padding-top: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .empresources h2 {
-  padding-top: 15px;
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: bolder;
+    padding-top: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bolder;
 }
 
 .empresources .card {
-  height: 250px;
-  margin-top: 5px;
-  margin-bottom: 20px;
-  display: block;
-  box-shadow: 7.5px 7.5px 5px #aaa;
-  border: 1px solid #e4e4e4;
-  border-radius: 10px;
+    height: 250px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    display: block;
+    box-shadow: 7.5px 7.5px 5px #aaa;
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
 }
 
 .orgdash .timecard {
-  /* border: 1px solid #dc3545; */
-  display: block;
-  box-shadow: 7.5px 7.5px 5px #aaa;
-  border: 1px solid #e4e4e4;
-  border-radius: 10px;
+    /* border: 1px solid #dc3545; */
+    display: block;
+    box-shadow: 7.5px 7.5px 5px #aaa;
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
 }
 
 .orgdash h2 {
-  padding-top: -5px;
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: bolder;
+    padding-top: -5px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bolder;
 }
 
 .orgdash h4 {
-  text-align: center;
-  font-weight: bold;
+    text-align: center;
+    font-weight: bold;
+}
+
+.empview {
+    padding-top: 70px;
 }
 
 .empview h2 {
-  padding-top: -5px;
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: bolder;
+    padding-top: -5px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bolder;
 }

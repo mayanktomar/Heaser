@@ -18,16 +18,13 @@ import {
     ModalFooter,
 } from "reactstrap";
 import { FcInfo } from "react-icons/fc";
-import SelectInput from "@material-ui/core/Select/SelectInput";
 import {
-    CircularProgressbar,
     buildStyles,
     CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { easeQuadInOut } from "d3-ease";
 import AnimatedProgressProvider from "./AnimatedProgressProvider";
-import RadialSeparators from "./RadialSeparators";
 import moment from "moment";
 import DateTimePicker from "react-datetime-picker";
 import { AuthContext } from "../Context/auth";
@@ -73,12 +70,12 @@ export class EmpTasks extends Component {
                 console.log(error);
             });
         await this.state.tasks.map((t) => {
-            if (t.from._id != t.to) {
+            if (t.from._id !== t.to) {
                 this.setState({
                     tasklength: this.state.tasklength + 1,
                 });
             }
-            if (t.from._id != t.to && t.isCompleted == true) {
+            if (t.from._id !== t.to && t.isCompleted === true) {
                 this.setState({
                     taskcomp: this.state.taskcomp + 1,
                 });
@@ -87,7 +84,7 @@ export class EmpTasks extends Component {
         await axios
             .get(
                 "/employee/get-employess-by-org-id/" +
-                    (type == "employee" ? data.organization : userId)
+                    (type === "employee" ? data.organization : userId)
             )
             .then((response) => {
                 this.setState({
@@ -182,9 +179,9 @@ export class EmpTasks extends Component {
 
     render() {
         const displaytasks = this.state.tasks.map((t) => {
-            if (t.from._id != t.to) {
+            if (t.from._id !== t.to) {
                 const styling =
-                    t.isCompleted == true
+                    t.isCompleted === true
                         ? { color: "#338333" }
                         : { color: "#e2c10a" };
                 return (
@@ -220,14 +217,14 @@ export class EmpTasks extends Component {
         });
 
         const display =
-            this.state.loading == true ? (
+            this.state.loading === true ? (
                 <Spinner color="info" />
             ) : (
                 displaytasks
             );
 
         const displayModal =
-            this.state.taskInfo == "~##~" ? (
+            this.state.taskInfo === "~##~" ? (
                 <Spinner color="info" />
             ) : (
                 <div>
@@ -250,7 +247,7 @@ export class EmpTasks extends Component {
                     {this.state.taskInfo.comments !== "" ? (
                         <p>Comments - {this.state.taskInfo.comments}</p>
                     ) : null}
-                    {this.state.taskInfo.isCompleted == false ? (
+                    {this.state.taskInfo.isCompleted === false ? (
                         <FormGroup check>
                             <Label check>
                                 <Input
@@ -266,8 +263,8 @@ export class EmpTasks extends Component {
                             </Label>
                         </FormGroup>
                     ) : null}
-                    {this.state.addComment == true &&
-                    this.state.taskInfo.isCompleted == false ? (
+                    {this.state.addComment === true &&
+                    this.state.taskInfo.isCompleted === false ? (
                         <FormGroup>
                             <Label for="quantity">Comments (Optional)</Label>
                             <Input
@@ -401,7 +398,7 @@ export class EmpTasks extends Component {
                     <ModalBody>
                         {displayModal}
 
-                        {this.state.taskInfo.isCompleted == false ? (
+                        {this.state.taskInfo.isCompleted === false ? (
                             <Button
                                 style={{
                                     backgroundColor: "#3e98c7",
@@ -420,7 +417,7 @@ export class EmpTasks extends Component {
                 <AnimatedProgressProvider
                     valueStart={0}
                     valueEnd={
-                        this.state.taskcomp != this.state.tasklength
+                        this.state.taskcomp !== this.state.tasklength
                             ? (this.state.taskcomp / this.state.tasklength) *
                               100
                             : 100
@@ -434,11 +431,16 @@ export class EmpTasks extends Component {
                             <CircularProgressbarWithChildren
                                 value={value}
                                 text={
-                                    `${this.state.tasklength!=this.state.taskcomp?Math.round(
-                                        (this.state.taskcomp /
-                                            this.state.tasklength) *
-                                            100
-                                    ):100}%` + `${emoji}`
+                                    `${
+                                        this.state.tasklength !==
+                                        this.state.taskcomp
+                                            ? Math.round(
+                                                  (this.state.taskcomp /
+                                                      this.state.tasklength) *
+                                                      100
+                                              )
+                                            : 100
+                                    }%` + `${emoji}`
                                 }
                                 /* This is important to include, because if you're fully managing the
                                 animation yourself, you'll want to disable the CSS animation. */

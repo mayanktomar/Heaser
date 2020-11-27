@@ -18,7 +18,7 @@ import emp1 from "../assets/emp1.svg";
 import Header from "../components/Header";
 import { AuthContext } from "../Context/auth";
 import Axios from "axios";
-import {TAGS} from './Tags';
+import { TAGS } from "./Tags";
 
 export class AddEmployee extends Component {
     static contextType = AuthContext;
@@ -30,7 +30,7 @@ export class AddEmployee extends Component {
             gender: "",
             dob: new Date(),
             loader: false,
-            tag:''
+            tag: "",
         };
     }
 
@@ -55,14 +55,13 @@ export class AddEmployee extends Component {
         });
     };
     onSubmit = () => {
-
         const params = {
             name: this.state.name,
             email: this.state.email,
             organization: this.context.userId,
             dob: moment(this.state.dob).format("YYYY-MM-DD"),
             gender: this.state.gender,
-            tags:[this.state.tag]
+            tags: [this.state.tag],
         };
         this.setState({ loader: true });
         Axios.post("/employee/create-employee", params)
@@ -76,14 +75,12 @@ export class AddEmployee extends Component {
             });
     };
     render() {
-        const dropdownoptions=TAGS.map((t)=>{
-            return(
-                <option>{t}</option>
-            )
-        })
+        const dropdownoptions = TAGS.map((t) => {
+            return <option>{t}</option>;
+        });
         return (
             <>
-                <Header {...this.props}/>
+                <Header {...this.props} />
                 <div className="container empadd">
                     <h2>Employee Addition Portal</h2>
                     <div className="row">
@@ -202,11 +199,19 @@ export class AddEmployee extends Component {
                                                 />
                                             </FormGroup>
                                             <FormGroup>
-                                                <Label for="exampleSelect">Department</Label>
-                                                <Input type="select" name="tag" id="exampleSelect" onChange={this.handleRegChange}>
-                                               
-                                                <option>-</option>
-                                                {dropdownoptions}
+                                                <Label for="exampleSelect">
+                                                    Department
+                                                </Label>
+                                                <Input
+                                                    type="select"
+                                                    name="tag"
+                                                    id="exampleSelect"
+                                                    onChange={
+                                                        this.handleRegChange
+                                                    }
+                                                >
+                                                    <option>-</option>
+                                                    {dropdownoptions}
                                                 </Input>
                                             </FormGroup>
                                         </Form>

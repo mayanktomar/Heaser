@@ -10,6 +10,8 @@ import {
     FormGroup,
     Label,
     Input,
+    Alert,
+    Spinner,
 } from "reactstrap";
 import { AuthContext } from "../Context/auth";
 
@@ -21,6 +23,8 @@ export class EmployeeLoginModal extends Component {
             username: "",
             password: "",
             loader: false,
+            error: false,
+            message: "",
         };
     }
 
@@ -41,6 +45,7 @@ export class EmployeeLoginModal extends Component {
             username: this.state.username,
             password: this.state.password,
         };
+
         Axios.post(`/employee/login`, params)
             .then((result) => {
                 this.context.setData(result.data.user);
@@ -59,7 +64,11 @@ export class EmployeeLoginModal extends Component {
                 this.props.history.push("/task");
             })
             .catch((err) => {
-                console.log(err);
+                this.setState({
+                    error: true,
+                    message: err.response.data.error,
+                    loader: false,
+                });
             });
     };
 
@@ -98,9 +107,14 @@ export class EmployeeLoginModal extends Component {
                                 />
                             </FormGroup>
                         </Form>
+                        {this.state.error ? (
+                            <Alert color="danger">{this.state.message}</Alert>
+                        ) : null}
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={this.onLogSubmit}>Login</Button>
+                        <Button onClick={this.onLogSubmit}>
+                            {this.state.loader ? <Spinner /> : "Login"}
+                        </Button>
                     </ModalFooter>
                 </Modal>
             </div>

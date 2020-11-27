@@ -2,16 +2,13 @@ import Axios from "axios";
 import React, { Component } from "react";
 import {
     Button,
-    Modal,
-    ModalHeader,
-    ModalBody,
     ModalFooter,
     Form,
     FormGroup,
     Label,
     Input,
-    FormTex,
     Spinner,
+    Alert,
 } from "reactstrap";
 import { AuthContext } from "../Context/auth";
 
@@ -23,6 +20,8 @@ export class LoginModal extends Component {
             email: "",
             password: "",
             loader: false,
+            error: false,
+            message: "",
         };
     }
 
@@ -61,7 +60,11 @@ export class LoginModal extends Component {
                 this.props.history.push("/organization");
             })
             .catch((err) => {
-                console.log(err);
+                this.setState({
+                    error: true,
+                    message: err.response.data.error,
+                    loader: false,
+                });
             });
     };
 
@@ -90,6 +93,9 @@ export class LoginModal extends Component {
                         />
                     </FormGroup>
                 </Form>
+                {this.state.error ? (
+                    <Alert color="danger">{this.state.message}</Alert>
+                ) : null}
                 <ModalFooter>
                     <Button onClick={this.onLogSubmit}>
                         {this.state.loader ? <Spinner /> : "Login"}{" "}

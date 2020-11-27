@@ -7,14 +7,9 @@ import {
     Nav,
     NavItem,
     NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    NavbarText,
     Badge,
 } from "reactstrap";
-import { IoMdLogOut, IoIosNotifications, IoMdShare } from "react-icons/io";
+import { IoMdLogOut, IoIosNotifications } from "react-icons/io";
 import { AuthContext } from "../Context/auth";
 import Axios from "axios";
 import NotificationModal from "./NotificationModal";
@@ -183,47 +178,56 @@ export class Header extends Component {
                                                 Announcements
                                             </NavLink>
                                         </NavItem>
-                                        <NavItem
-                                            onClick={() => {
-                                                this.props.history.push(
-                                                    "/personality"
-                                                );
-                                            }}
-                                        >
-                                            <NavLink
-                                                style={{
-                                                    color: "white",
-                                                    cursor: "pointer",
-                                                    fontWeight: "bold",
-                                                }}
-                                            >
-                                                Personality
-                                            </NavLink>
-                                        </NavItem>
-                                        <NavItem>
-                                            <div
-                                                style={{
-                                                    cursor: "pointer",
-                                                    color: "white",
-                                                    marginTop: 7,
-                                                    display: "flex",
-                                                    flexDirection: "row",
-                                                    justifyContent: "center",
-                                                    marginLeft: 5,
-                                                    marginRight: 5,
-                                                }}
-                                                onClick={() => {
-                                                    this.props.history.push(
-                                                        "/profile"
-                                                    );
-                                                }}
-                                            >
-                                                <CgProfile
-                                                    size={22}
-                                                    style={{ marginTop: 1 }}
-                                                />
-                                            </div>
-                                        </NavItem>
+                                        {this.context.type === "employee" ? (
+                                            <>
+                                                <NavItem
+                                                    onClick={() => {
+                                                        this.props.history.push(
+                                                            "/personality"
+                                                        );
+                                                    }}
+                                                >
+                                                    <NavLink
+                                                        style={{
+                                                            color: "white",
+                                                            cursor: "pointer",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        Personality
+                                                    </NavLink>
+                                                </NavItem>
+
+                                                <NavItem>
+                                                    <div
+                                                        style={{
+                                                            cursor: "pointer",
+                                                            color: "white",
+                                                            marginTop: 7,
+                                                            display: "flex",
+                                                            flexDirection:
+                                                                "row",
+                                                            justifyContent:
+                                                                "center",
+                                                            marginLeft: 5,
+                                                            marginRight: 5,
+                                                        }}
+                                                        onClick={() => {
+                                                            this.props.history.push(
+                                                                "/profile"
+                                                            );
+                                                        }}
+                                                    >
+                                                        <CgProfile
+                                                            size={22}
+                                                            style={{
+                                                                marginTop: 1,
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </NavItem>
+                                            </>
+                                        ) : null}
                                     </Nav>
                                     <Nav navbar>
                                         <NavItem>
@@ -260,6 +264,7 @@ export class Header extends Component {
                 <NotificationModal
                     {...this.props}
                     data={this.state.data}
+                    count={this.state.count}
                     isNotModalOpen={this.state.isNotModalOpen}
                     toggleNotModal={this.toggleNotModal}
                     markNotificationSeen={this.markNotificationSeen}

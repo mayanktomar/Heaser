@@ -51,7 +51,7 @@ export class ViewEmp extends Component {
                 const data = [...this.state.employees];
 
                 const index = data.findIndex(
-                    (item) => item._id == this.state.id
+                    (item) => item._id === this.state.id
                 );
 
                 data.splice(index, 1);
@@ -112,20 +112,20 @@ export class ViewEmp extends Component {
             );
         });
         const displaycheck =
-            this.state.employees.length == 0 ? (
+            this.state.employees.length === 0 ? (
                 <p>You have no registered employees..!!</p>
             ) : (
                 displaylist
             );
         const display =
-            this.state.loading == true ? (
+            this.state.loading === true ? (
                 <Spinner color="info" />
             ) : (
                 displaycheck
             );
         return (
             <>
-                <Header />
+                <Header {...this.props} />
                 <div className="container empview">
                     <Modal
                         isOpen={this.state.isModalOpen}

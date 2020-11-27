@@ -123,7 +123,7 @@ export class EmpMain extends Component {
                                                 {greeting}{" "}
                                                 {this.context.data &&
                                                     this.context.data.name}
-                                                {"👋"}, It is{" "}
+                                                {"👋"}. It is{" "}
                                                 {moment(
                                                     this.state.datetime
                                                 ).format(

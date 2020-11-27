@@ -1,12 +1,8 @@
 import Axios from "axios";
 import React, { Component } from "react";
 import {
-    Card,
-    CardBody,
-    CardTitle,
     Button,
     Table,
-    Badge,
     Modal,
     ModalHeader,
     ModalBody,
@@ -23,8 +19,6 @@ import Dummy from "../assets/dummy.jpg";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import {
-    AreaChart,
-    Area,
     XAxis,
     YAxis,
     CartesianGrid,

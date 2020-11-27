@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import bg1 from "../assets/bg1.jpg";
 import {
     Card,
     CardBody,
@@ -142,7 +141,7 @@ export class OrgDashboard extends Component {
                                                 {greeting}{" "}
                                                 {this.context.data &&
                                                     this.context.data.name}
-                                                {"👋"}, It is{" "}
+                                                {"👋"}. It is{" "}
                                                 {moment(
                                                     this.state.datetime
                                                 ).format(
@@ -164,6 +163,7 @@ export class OrgDashboard extends Component {
                                             ) : (
                                                 <>
                                                     <img
+                                                        alt="icon-weather"
                                                         src={
                                                             "http://openweathermap.org/img/w/" +
                                                             this.state.icon +
@@ -307,8 +307,7 @@ export class OrgDashboard extends Component {
                             </Button>
                             <br />
                             <Button
-
-                             onClick={this.toggleOnboardingModal}
+                                onClick={this.toggleOnboardingModal}
                                 style={{
                                     backgroundColor: "#1976d2",
                                     width: "75%",
@@ -317,9 +316,9 @@ export class OrgDashboard extends Component {
                                     color: "white",
                                 }}
                             >
-                               Upload resources
+                                Upload resources
                             </Button>
-                            <br/>
+                            <br />
                             <Button
                                 style={{
                                     backgroundColor: "#1976d2",

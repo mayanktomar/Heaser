@@ -11,14 +11,12 @@ import {
 import queryString from "query-string";
 import Axios from "axios";
 import {
-    CircularProgressbar,
     buildStyles,
     CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { easeQuadInOut } from "d3-ease";
 import AnimatedProgressProvider from "./AnimatedProgressProvider";
-import RadialSeparators from "./RadialSeparators";
 import moment from "moment";
 
 class EmpTime extends Component {
@@ -173,56 +171,50 @@ class EmpTime extends Component {
                     console.log(error);
                 });
 
-               
-              
-                await Axios.post('/time/get-employee-time/'+timedata._id, {
-                   day:moment(new Date()).format("YYYY-MM-DD"),
-                  
-                 })
-                 .then( (response) => {
-                   if (response.data.data.length>0)
-                   {
-                       this.setState({
-                           userTime:response.data.data[0].total_time,
-                           timeExist:true,
-                           timeId:response.data.data[0]._id
-                       })
-                   }
-                console.log(response)
-                 })
-                 .catch(function (error) {
-                   console.log(error);
-                 });
-                
-                 if (this.state.timeExist==true)
-                 {
-                     console.log("hello")
-                     
-                    await  Axios.put('/time/update-time-for-employee/'+this.state.timeId, {
-                       total_time:this.state.totalDuration
-                       
-                      })
-                      .then( (response) => {
-                       
-                     console.log(response)
-                      })
-                      .catch(function (error) {
+            await Axios.post("/time/get-employee-time/" + timedata._id, {
+                day: moment(new Date()).format("YYYY-MM-DD"),
+            })
+                .then((response) => {
+                    if (response.data.data.length > 0) {
+                        this.setState({
+                            userTime: response.data.data[0].total_time,
+                            timeExist: true,
+                            timeId: response.data.data[0]._id,
+                        });
+                    }
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            if (this.state.timeExist == true) {
+                console.log("hello");
+
+                await Axios.put(
+                    "/time/update-time-for-employee/" + this.state.timeId,
+                    {
+                        total_time: this.state.totalDuration,
+                    }
+                )
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
                         console.log(error);
-                      });
-                 }
-                 else
-                 {
-                    
-                    await Axios.post('/time/create-time-for-employee/'+timedata._id, {
-                         day:moment(new Date()).format("YYYY-MM-DD"),
-                         total_time:this.state.totalDuration
-                       
-                      })
-                      .then( (response) => {
-                       
-                     console.log(response)
-                      })
-                      .catch(function (error) {
+                    });
+            } else {
+                await Axios.post(
+                    "/time/create-time-for-employee/" + timedata._id,
+                    {
+                        day: moment(new Date()).format("YYYY-MM-DD"),
+                        total_time: this.state.totalDuration,
+                    }
+                )
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
                         console.log(error);
                     });
             }
