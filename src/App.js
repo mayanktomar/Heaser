@@ -43,11 +43,11 @@ function App() {
         setData(JSON.parse(data));
     };
 
-    useEffect(() => {
-        getToken();
-        getUserId();
-        getType();
-        getUserData();
+    useEffect(async () => {
+        await getToken();
+        await getUserId();
+        await getType();
+        await getUserData();
     }, []);
 
     return (
