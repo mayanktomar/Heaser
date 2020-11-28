@@ -1,21 +1,21 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
+import AskLogin from "./Pages/AskLogin";
+import OrgDashboard from "./Pages/OrgDashboard";
 import PrivateRoute from "./PrivateRoutes";
 import { AuthContext } from "./Context/auth";
-
-const AskLogin = lazy(() => import("./Pages/AskLogin"));
-const OrgDashboard = lazy(() => import("./Pages/OrgDashboard"));
-const Chat = lazy(() => import("./Pages/Chat/Chat"));
-const AddEmployee = lazy(() => import("./Pages/AddEmployee"));
-const EmpMain = lazy(() => import("./Pages/EmpMain"));
-const EmpAnnouncements = lazy(() => import("./Pages/EmpAnnouncements"));
-const EmpLeave = lazy(() => import("./Pages/EmpLeave"));
-const Profile = lazy(() => import("./Pages/Profile"));
-const Personality = lazy(() => import("./Pages/Personality"));
-const EmpResources = lazy(() => import("./components/EmpResources"));
-const ViewEmp = lazy(() => import("./Pages/ViewEmp"));
-const WelcomeKit = lazy(() => import("./Pages/WelcomeKit"));
+import Chat from "./Pages/Chat/Chat";
+import AddEmployee from "./Pages/AddEmployee";
+import EmpMain from "./Pages/EmpMain";
+import EmpAnnouncements from "./Pages/EmpAnnouncements";
+import EmpLeave from "./Pages/EmpLeave";
+import Profile from "./Pages/Profile";
+import EmpResources from "./components/EmpResources";
+import ViewEmp from "./Pages/ViewEmp";
+import Onboarding from "./Pages/Onboarding";
+import WelcomeKit from "./Pages/WelcomeKit";
+import Personality from "./Pages/Personality";
 
 function App() {
     const [token, setToken] = useState(null);
@@ -53,75 +53,73 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
-                <AuthContext.Provider
-                    value={{
-                        token,
-                        data,
-                        userId,
-                        type,
-                        setData,
-                        setToken,
-                        setType,
-                        setUserId,
-                    }}
-                >
-                    <Suspense fallback={<div className="App-header"></div>}>
-                        <Switch>
-                            <Route exact path="/" component={AskLogin} />
-                            <PrivateRoute path="/workspace" component={Chat} />
-                            <PrivateRoute
-                                path="/organization"
-                                component={OrgDashboard}
-                            />
-                            <PrivateRoute
-                                path="/add-employee"
-                                component={AddEmployee}
-                            />
-                            <PrivateRoute
-                                path="/view-employees"
-                                component={ViewEmp}
-                            />
-                            <PrivateRoute path="/task" component={EmpMain} />
-                            <PrivateRoute path="/leave" component={EmpLeave} />
-                            <PrivateRoute
-                                path="/announcement"
-                                component={EmpAnnouncements}
-                            />
-                            <PrivateRoute
-                                path="/onboarding-portal"
-                                component={WelcomeKit}
-                            />
-                            <PrivateRoute
-                                path="/resources"
-                                component={EmpResources}
-                            />
+                <Switch>
+                    <AuthContext.Provider
+                        value={{
+                            token,
+                            data,
+                            userId,
+                            type,
+                            setData,
+                            setToken,
+                            setType,
+                            setUserId,
+                        }}
+                    >
+                        <Route exact path="/" component={AskLogin} />
+                        <PrivateRoute path="/workspace" component={Chat} />
+                        <PrivateRoute
+                            path="/organization"
+                            component={OrgDashboard}
+                        />
+                        <PrivateRoute
+                            path="/add-employee"
+                            component={AddEmployee}
+                        />
+                        <PrivateRoute
+                            path="/view-employees"
+                            component={ViewEmp}
+                        />
+                        <PrivateRoute path="/task" component={EmpMain} />
+                        <PrivateRoute path="/leave" component={EmpLeave} />
+                        <PrivateRoute
+                            path="/announcement"
+                            component={EmpAnnouncements}
+                        />
+                        <PrivateRoute
+                            path="/onboarding-portal"
+                            component={WelcomeKit}
+                        />
+                        <PrivateRoute
+                            path="/resources"
+                            component={EmpResources}
+                        />
 
-                            <PrivateRoute
-                                path="/profile"
-                                component={Profile}
-                                update={true}
+                        <PrivateRoute
+                            path="/profile"
+                            component={Profile}
+                            update={true}
+                        />
+                        <PrivateRoute
+                            path="/employee/:id"
+                            component={Profile}
+                            update={false}
+                        />
+                        <PrivateRoute
+                            path="/personality"
+                            component={Personality}
+                        />
+                        {token !== null && token !== "null" ? (
+                            <Redirect
+                                to={
+                                    type === "organization"
+                                        ? "/organization"
+                                        : "/task"
+                                }
                             />
-                            <PrivateRoute
-                                path="/employee/:id"
-                                component={Profile}
-                                update={false}
-                            />
-                            <PrivateRoute
-                                path="/personality"
-                                component={Personality}
-                            />
-                            {token !== null && token !== "null" ? (
-                                <Redirect
-                                    to={
-                                        type === "organization"
-                                            ? "/organization"
-                                            : "/task"
-                                    }
-                                />
-                            ) : null}
-                        </Switch>
-                    </Suspense>
-                </AuthContext.Provider>
+                        ) : null}
+                    </AuthContext.Provider>
+                </Switch>
             </BrowserRouter>
         </div>
     );

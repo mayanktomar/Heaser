@@ -33,6 +33,7 @@ export class OrgDashboard extends Component {
             sunset: undefined,
             errorMessage: undefined,
             loadingweather: true,
+            new: [],
         };
     }
     getPosition = () => {
@@ -70,8 +71,12 @@ export class OrgDashboard extends Component {
         axios
             .get("/employee/get-employess-by-org-id/" + data._id)
             .then((response) => {
+                const data = response.data.data.filter(
+                    (item) => item.new === true
+                );
                 this.setState({
                     employees: response.data.data,
+                    new: data,
                 });
             })
             .catch(function (error) {
@@ -201,7 +206,9 @@ export class OrgDashboard extends Component {
                                 <CardBody>
                                     <CardTitle>Number of employees</CardTitle>
                                     <CardText>
-                                        <h4>{this.state.employees.length}</h4>
+                                        <h4 style={{ color: "#FCB529" }}>
+                                            {this.state.employees.length}
+                                        </h4>
                                     </CardText>
                                 </CardBody>
                             </Card>
@@ -213,7 +220,9 @@ export class OrgDashboard extends Component {
                                         Number of new employees
                                     </CardTitle>
                                     <CardText>
-                                        <h4>0</h4>
+                                        <h4 style={{ color: "#A8EB2D" }}>
+                                            {this.state.new.length}
+                                        </h4>
                                     </CardText>
                                 </CardBody>
                             </Card>
@@ -225,7 +234,7 @@ export class OrgDashboard extends Component {
                                         Number of announcements
                                     </CardTitle>
                                     <CardText>
-                                        <h4>6</h4>
+                                        <h4 style={{ color: "#F64B4E" }}>6</h4>
                                     </CardText>
                                 </CardBody>
                             </Card>
