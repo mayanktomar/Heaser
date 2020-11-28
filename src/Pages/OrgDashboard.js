@@ -58,7 +58,7 @@ export class OrgDashboard extends Component {
             loadingweather: false,
         });
     };
-    componentDidMount = () => {
+    componentDidMount = async () => {
         setInterval(() => {
             this.setState({
                 datetime: new Date(),
@@ -68,7 +68,7 @@ export class OrgDashboard extends Component {
         let data = localStorage.getItem("heaserData");
         data = JSON.parse(data);
 
-        axios
+        await axios
             .get("/employee/get-employess-by-org-id/" + data._id)
             .then((response) => {
                 const data = response.data.data.filter(

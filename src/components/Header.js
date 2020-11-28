@@ -34,17 +34,15 @@ export class Header extends Component {
     };
 
     getEmployeeNotification = async (userId) => {
-        Axios.get(`/notification/get-employee-notification/${userId}`).then(
-            (result) => {
-                const data = result.data.data.filter(
-                    (item) => item.seen === false
-                );
-                this.setState({
-                    data: result.data.data,
-                    count: data.length,
-                });
-            }
-        );
+        await Axios.get(
+            `/notification/get-employee-notification/${userId}`
+        ).then((result) => {
+            const data = result.data.data.filter((item) => item.seen === false);
+            this.setState({
+                data: result.data.data,
+                count: data.length,
+            });
+        });
     };
 
     markNotificationSeen = (id) => {
@@ -59,17 +57,15 @@ export class Header extends Component {
     };
 
     getOrganizationNotification = async (userId) => {
-        Axios.get(`/notification/get-organization-notification/${userId}`).then(
-            (result) => {
-                const data = result.data.data.filter(
-                    (item) => item.seen === false
-                );
-                this.setState({
-                    data: result.data.data,
-                    count: data.length,
-                });
-            }
-        );
+        await Axios.get(
+            `/notification/get-organization-notification/${userId}`
+        ).then((result) => {
+            const data = result.data.data.filter((item) => item.seen === false);
+            this.setState({
+                data: result.data.data,
+                count: data.length,
+            });
+        });
     };
 
     async componentDidMount() {

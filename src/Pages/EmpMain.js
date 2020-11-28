@@ -56,14 +56,14 @@ export class EmpMain extends Component {
         this.setState({ chatBotOpen: !this.state.chatBotOpen });
     };
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
         setInterval(() => {
             this.setState({
                 datetime: new Date(),
             });
         }, 1000);
 
-        this.getPosition()
+        await this.getPosition()
             .then((position) => {
                 this.getWeather(
                     position.coords.latitude,
@@ -179,13 +179,13 @@ export class EmpMain extends Component {
                                 </CardBody>
                             </Card>
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-md-4" style={{ marginTop: 20 }}>
                             <EmpTasks {...this.props} />
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-md-4" style={{ marginTop: 20 }}>
                             <EmpTodos {...this.props} />
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-md-4" style={{ marginTop: 20 }}>
                             <EmpTime {...this.props} />
                         </div>
                     </div>
