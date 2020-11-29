@@ -50,10 +50,6 @@ function App() {
         await getUserData();
     }, []);
 
-    if (token !== null && token !== "null") {
-        <Redirect to={type === "organization" ? "/organization" : "/task"} />;
-    }
-
     return (
         <div className="App">
             <BrowserRouter>
@@ -113,6 +109,15 @@ function App() {
                             path="/personality"
                             component={Personality}
                         />
+                        {token !== null && token !== "null" ? (
+                            <Redirect
+                                to={
+                                    type === "organization"
+                                        ? "/organization"
+                                        : "/task"
+                                }
+                            />
+                        ) : null}
                     </AuthContext.Provider>
                 </Switch>
             </BrowserRouter>

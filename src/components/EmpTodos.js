@@ -49,41 +49,44 @@ export class EmpTodos extends Component {
 
     componentDidMount = async () => {
         let userId = localStorage.getItem("userId");
+        let type = localStorage.getItem("heaserType");
 
-        await axios
-            .get("/task/get-employee-tasks/" + userId)
-            .then((response) => {
-                this.setState({
-                    todos: response.data.tasks,
-                    loading: false,
+        if (type === "employee") {
+            await axios
+                .get("/task/get-employee-tasks/" + userId)
+                .then((response) => {
+                    this.setState({
+                        todos: response.data.tasks,
+                        loading: false,
+                    });
+                    this.findProgress();
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
-                this.findProgress();
-            })
-            .catch(function (error) {
-                console.log(error);
+
+            await this.state.todos.map((t) => {
+                if (
+                    t.from._id === t.to &&
+                    moment(t.endDate).format("YYYY-MM-DD") ===
+                        moment(new Date()).format("YYYY-MM-DD")
+                ) {
+                    this.setState({
+                        todoslength: this.state.todoslength + 1,
+                    });
+                }
+                if (
+                    t.from._id === t.to &&
+                    t.isCompleted === true &&
+                    moment(t.endDate).format("YYYY-MM-DD") ===
+                        moment(new Date()).format("YYYY-MM-DD")
+                ) {
+                    this.setState({
+                        todoscomp: this.state.todoscomp + 1,
+                    });
+                }
             });
-
-        await this.state.todos.map((t) => {
-            if (
-                t.from._id === t.to &&
-                moment(t.endDate).format("YYYY-MM-DD") ===
-                    moment(new Date()).format("YYYY-MM-DD")
-            ) {
-                this.setState({
-                    todoslength: this.state.todoslength + 1,
-                });
-            }
-            if (
-                t.from._id === t.to &&
-                t.isCompleted === true &&
-                moment(t.endDate).format("YYYY-MM-DD") ===
-                    moment(new Date()).format("YYYY-MM-DD")
-            ) {
-                this.setState({
-                    todoscomp: this.state.todoscomp + 1,
-                });
-            }
-        });
+        }
     };
 
     toggleAllotModal = () => {

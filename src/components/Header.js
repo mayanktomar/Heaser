@@ -45,8 +45,8 @@ export class Header extends Component {
         });
     };
 
-    markNotificationSeen = (id) => {
-        Axios.put(`/notification/mark-notification-seen/${id}`).then(
+    markNotificationSeen = async (id) => {
+        await Axios.put(`/notification/mark-notification-seen/${id}`).then(
             (result) => {
                 const data = [...this.state.data];
                 const idx = data.findIndex((item) => item._id === id);
@@ -73,8 +73,10 @@ export class Header extends Component {
         let userId = await localStorage.getItem("userId");
         userId = userId === "null" ? JSON.parse(userId) : userId;
         if (userId) {
-            if (data === "employee") this.getEmployeeNotification(userId);
-            else this.getOrganizationNotification(userId);
+            if (data == "employee") this.getEmployeeNotification(userId);
+            else {
+                this.getOrganizationNotification(userId);
+            }
         }
     }
 
@@ -191,6 +193,23 @@ export class Header extends Component {
                                                         }}
                                                     >
                                                         Personality
+                                                    </NavLink>
+                                                </NavItem>
+                                                <NavItem
+                                                    onClick={() => {
+                                                        this.props.history.push(
+                                                            "/resources"
+                                                        );
+                                                    }}
+                                                >
+                                                    <NavLink
+                                                        style={{
+                                                            color: "white",
+                                                            cursor: "pointer",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        Training
                                                     </NavLink>
                                                 </NavItem>
 

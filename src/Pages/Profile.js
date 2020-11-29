@@ -100,9 +100,7 @@ export class Profile extends Component {
 
         axios
             .put("/user/update-user/" + this.context.userId, temp)
-            .then(function (response) {
-                console.log(response);
-            })
+            .then(function (response) {})
             .catch(function (error) {
                 console.log(error);
             });
@@ -309,9 +307,19 @@ export class Profile extends Component {
                                 Update Profile
                             </Button>
                         ) : null}
-                        <div className="row" style={{ margin: 0, padding: 0 }}>
-                            <div className="col-6" style={{ paddingTop: 90 }}>
-                                <LineChart width={500} height={300} data={data}>
+                        <div
+                            className="row"
+                            style={{ margin: 0, paddingTop: 50 }}
+                        >
+                            <div
+                                className="col-md-6"
+                                style={{
+                                    paddingTop: 50,
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <LineChart width={400} height={350} data={data}>
                                     <Line
                                         type="linear"
                                         dataKey="Time"
@@ -329,16 +337,17 @@ export class Profile extends Component {
                                 </LineChart>
                             </div>
                             <div
-                                className="col-6"
+                                className="col-md-6"
                                 style={{
-                                    paddingLeft: "auto",
-                                    paddingRight: "auto",
+                                    paddingTop: 10,
+                                    display: "flex",
+                                    justifyContent: "center",
                                 }}
                             >
                                 <RadarChart
                                     outerRadius={120}
-                                    width={450}
-                                    height={450}
+                                    width={400}
+                                    height={400}
                                     data={data1}
                                     margin={{ left: "auto", right: "auto" }}
                                 >

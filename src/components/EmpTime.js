@@ -39,191 +39,188 @@ class EmpTime extends Component {
     }
 
     componentDidMount = async () => {
-        let stor = localStorage.getItem("heaserWakatime");
-        this.setState({ type: stor });
-        let access_code = localStorage.getItem("heaserWakatimeAccess");
-        let refresh_code = localStorage.getItem("heaserWakatimeRefresh");
-        if (access_code === null) {
-            const data = window.location.search;
-            const parsed = queryString.parse(data);
-            this.setState({ code: parsed.code });
-            if (refresh_code === null) {
-                Axios.post(`/wakatime/main-wakatime`, {
-                    code: parsed.code,
-                    type: "first",
-                })
-                    .then((result) => {
-                        localStorage.setItem(
-                            "heaserWakatimeAccess",
-                            result.data.access_token
-                        );
-                        localStorage.setItem(
-                            "heaserWakatimeRefresh",
-                            result.data.refresh_token
-                        );
-                        this.setState({
-                            access_token: result.data.access_token,
-                            refresh_token: result.data.refresh_token,
-                        });
-                        window.location.reload();
-                    })
-                    .catch((err) => {
-                        localStorage.removeItem("heaserWakatimeAccess");
-                        localStorage.removeItem("heaserWakatimeRefresh");
-                        this.setState({
-                            type: null,
-                            access_token: "",
-                            refresh_token: "",
-                        });
-                        console.log(err);
-                    });
-            } else {
-                Axios.post(`/wakatime/main-wakatime`, {
-                    code: refresh_code,
-                    type: "second",
-                })
-                    .then((result) => {
-                        localStorage.setItem(
-                            "heaserWakatimeAccess",
-                            result.data.access_token
-                        );
-                        localStorage.setItem(
-                            "heaserWakatimeRefresh",
-                            result.data.refresh_token
-                        );
-                        this.setState({
-                            access_token: result.data.access_token,
-                            refresh_token: result.data.refresh_token,
-                        });
-                    })
-                    .catch((err) => {
-                        localStorage.removeItem("heaserWakatimeAccess");
-                        localStorage.removeItem("heaserWakatimeRefresh");
-                        this.setState({
-                            type: null,
-                            access_token: "",
-                            refresh_token: "",
-                        });
-                        console.log(err);
-                    });
-            }
-        } else {
-            await Axios.get(`/wakatime/get-projects/${access_code}`)
-                .then((result) => {
-                    this.setState({
-                        result: result.data.data,
-                    });
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+        let type = localStorage.getItem("heaserType");
+        if (type === "employee") {
+            let stor = localStorage.getItem("heaserWakatime");
 
-            await this.state.result.map((r) => {
-                const temp = this.state.projects;
-                if (temp.indexOf(r.project) < 0) {
-                    temp.push(r.project);
+            this.setState({ type: stor });
+            let access_code = localStorage.getItem("heaserWakatimeAccess");
+            let refresh_code = localStorage.getItem("heaserWakatimeRefresh");
+            if (access_code === null) {
+                const data = window.location.search;
+                const parsed = queryString.parse(data);
+                this.setState({ code: parsed.code });
+                if (refresh_code === null) {
+                    Axios.post(`/wakatime/main-wakatime`, {
+                        code: parsed.code,
+                        type: "first",
+                    })
+                        .then((result) => {
+                            localStorage.setItem(
+                                "heaserWakatimeAccess",
+                                result.data.access_token
+                            );
+                            localStorage.setItem(
+                                "heaserWakatimeRefresh",
+                                result.data.refresh_token
+                            );
+                            this.setState({
+                                access_token: result.data.access_token,
+                                refresh_token: result.data.refresh_token,
+                            });
+                            window.location.reload();
+                        })
+                        .catch((err) => {
+                            localStorage.removeItem("heaserWakatimeAccess");
+                            localStorage.removeItem("heaserWakatimeRefresh");
+                            this.setState({
+                                type: null,
+                                access_token: "",
+                                refresh_token: "",
+                            });
+                            console.log(err);
+                        });
+                } else {
+                    Axios.post(`/wakatime/main-wakatime`, {
+                        code: refresh_code,
+                        type: "second",
+                    })
+                        .then((result) => {
+                            localStorage.setItem(
+                                "heaserWakatimeAccess",
+                                result.data.access_token
+                            );
+                            localStorage.setItem(
+                                "heaserWakatimeRefresh",
+                                result.data.refresh_token
+                            );
+                            this.setState({
+                                access_token: result.data.access_token,
+                                refresh_token: result.data.refresh_token,
+                            });
+                        })
+                        .catch((err) => {
+                            localStorage.removeItem("heaserWakatimeAccess");
+                            localStorage.removeItem("heaserWakatimeRefresh");
+                            this.setState({
+                                type: null,
+                                access_token: "",
+                                refresh_token: "",
+                            });
+                            console.log(err);
+                        });
                 }
-                this.setState({
-                    totalDuration:
-                        (this.state.totalDuration * 60 + r.duration) / 60,
-                    projects: temp,
-                });
-            });
-
-            if (this.state.projects.length > 0) {
-                await this.state.projects.map(async (p) => {
-                    const temp = this.state.durations;
-                    const temp1 = {};
-                    const data = this.state.result.filter((obj) => {
-                        return obj.project === p;
-                    });
-                    var t = 0;
-                    await data.map((d) => {
-                        t = t + d.duration;
-                    });
-                    temp1["name"] = p;
-                    temp1["time"] = t;
-                    temp.push(temp1);
-                    this.setState({
-                        durations: temp,
-                    });
-                    this.setState({
-                        loadingDurations: false,
-                    });
-                });
-            }
-
-            let timedata = await localStorage.getItem("heaserData");
-            timedata = JSON.parse(timedata);
-            Axios.post("/time/get-employee-time/" + timedata._id, {
-                day: moment(new Date()).format("YYYY-MM-DD"),
-            })
-                .then((response) => {
-                    if (response.data.data.length > 0) {
-                        this.setState({
-                            userTime: response.data.data[0].total_time,
-                            timeExist: true,
-                            timeId: response.data.data[0]._id,
-                        });
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-
-            await Axios.post("/time/get-employee-time/" + timedata._id, {
-                day: moment(new Date()).format("YYYY-MM-DD"),
-            })
-                .then((response) => {
-                    if (response.data.data.length > 0) {
-                        this.setState({
-                            userTime: response.data.data[0].total_time,
-                            timeExist: true,
-                            timeId: response.data.data[0]._id,
-                        });
-                    }
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-
-            if (this.state.timeExist == true) {
-                console.log("hello");
-
-                await Axios.put(
-                    "/time/update-time-for-employee/" + this.state.timeId,
-                    {
-                        total_time: this.state.totalDuration,
-                    }
-                )
-                    .then((response) => {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
             } else {
-                await Axios.post(
-                    "/time/create-time-for-employee/" + timedata._id,
-                    {
-                        day: moment(new Date()).format("YYYY-MM-DD"),
-                        total_time: this.state.totalDuration,
+                await Axios.get(`/wakatime/get-projects/${access_code}`)
+                    .then((result) => {
+                        this.setState({
+                            result: result.data.data,
+                        });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+
+                await this.state.result.map((r) => {
+                    const temp = this.state.projects;
+                    if (temp.indexOf(r.project) < 0) {
+                        temp.push(r.project);
                     }
-                )
+                    this.setState({
+                        totalDuration:
+                            (this.state.totalDuration * 60 + r.duration) / 60,
+                        projects: temp,
+                    });
+                });
+
+                if (this.state.projects.length > 0) {
+                    await this.state.projects.map(async (p) => {
+                        const temp = this.state.durations;
+                        const temp1 = {};
+                        const data = this.state.result.filter((obj) => {
+                            return obj.project === p;
+                        });
+                        var t = 0;
+                        await data.map((d) => {
+                            t = t + d.duration;
+                        });
+                        temp1["name"] = p;
+                        temp1["time"] = t;
+                        temp.push(temp1);
+                        this.setState({
+                            durations: temp,
+                        });
+                        this.setState({
+                            loadingDurations: false,
+                        });
+                    });
+                }
+
+                let timedata = await localStorage.getItem("heaserData");
+                timedata = JSON.parse(timedata);
+                Axios.post("/time/get-employee-time/" + timedata._id, {
+                    day: moment(new Date()).format("YYYY-MM-DD"),
+                })
                     .then((response) => {
-                        console.log(response);
+                        if (response.data.data.length > 0) {
+                            this.setState({
+                                userTime: response.data.data[0].total_time,
+                                timeExist: true,
+                                timeId: response.data.data[0]._id,
+                            });
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
-            }
-            //  this.setState({
-            //      userTime:this.state.userTime+=parseInt(((this.state.runningtime/1000)/60)),
-            //      isRunning:false,
-            //      runningtime:0
 
-            //  })
+                await Axios.post("/time/get-employee-time/" + timedata._id, {
+                    day: moment(new Date()).format("YYYY-MM-DD"),
+                })
+                    .then((response) => {
+                        if (response.data.data.length > 0) {
+                            this.setState({
+                                userTime: response.data.data[0].total_time,
+                                timeExist: true,
+                                timeId: response.data.data[0]._id,
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+                if (this.state.timeExist == true) {
+                    await Axios.put(
+                        "/time/update-time-for-employee/" + this.state.timeId,
+                        {
+                            total_time: this.state.totalDuration,
+                        }
+                    )
+                        .then((response) => {})
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                } else {
+                    await Axios.post(
+                        "/time/create-time-for-employee/" + timedata._id,
+                        {
+                            day: moment(new Date()).format("YYYY-MM-DD"),
+                            total_time: this.state.totalDuration,
+                        }
+                    )
+                        .then((response) => {})
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+                //  this.setState({
+                //      userTime:this.state.userTime+=parseInt(((this.state.runningtime/1000)/60)),
+                //      isRunning:false,
+                //      runningtime:0
+
+                //  })
+            }
         }
     };
 

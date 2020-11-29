@@ -58,42 +58,44 @@ export class EmpTasks extends Component {
         let type = localStorage.getItem("heaserType");
         let data = localStorage.getItem("heaserData");
         data = JSON.parse(data);
-        await axios
-            .get("/task/get-employee-tasks/" + userId)
-            .then((response) => {
-                this.setState({
-                    tasks: response.data.tasks,
-                    loading: false,
+        if (type === "employee") {
+            await axios
+                .get("/task/get-employee-tasks/" + userId)
+                .then((response) => {
+                    this.setState({
+                        tasks: response.data.tasks,
+                        loading: false,
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
-            })
-            .catch(function (error) {
-                console.log(error);
+            await this.state.tasks.map((t) => {
+                if (t.from._id !== t.to) {
+                    this.setState({
+                        tasklength: this.state.tasklength + 1,
+                    });
+                }
+                if (t.from._id !== t.to && t.isCompleted === true) {
+                    this.setState({
+                        taskcomp: this.state.taskcomp + 1,
+                    });
+                }
             });
-        await this.state.tasks.map((t) => {
-            if (t.from._id !== t.to) {
-                this.setState({
-                    tasklength: this.state.tasklength + 1,
+            await axios
+                .get(
+                    "/employee/get-employees-by-org-id/" +
+                        (type === "employee" ? data.organization : userId)
+                )
+                .then((response) => {
+                    this.setState({
+                        employees: response.data.data,
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
-            }
-            if (t.from._id !== t.to && t.isCompleted === true) {
-                this.setState({
-                    taskcomp: this.state.taskcomp + 1,
-                });
-            }
-        });
-        await axios
-            .get(
-                "/employee/get-employess-by-org-id/" +
-                    (type === "employee" ? data.organization : userId)
-            )
-            .then((response) => {
-                this.setState({
-                    employees: response.data.data,
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        }
     };
 
     toggleTaskModal = async () => {

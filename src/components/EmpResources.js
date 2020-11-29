@@ -3,7 +3,7 @@ import axios from "axios";
 import { Card, CardBody, CardText, Spinner, Button } from "reactstrap";
 import Header from "./Header";
 
-export default function EmpResources() {
+export default function EmpResources(props) {
     const [courses, setcourses] = useState([]);
     const [loading, setloading] = useState(true);
 
@@ -70,7 +70,7 @@ export default function EmpResources() {
 
     return (
         <>
-            <Header />
+            <Header {...props} />
             <div className="container empresources">
                 <br />
                 <h2>Resources</h2>

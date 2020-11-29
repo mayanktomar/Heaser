@@ -6,7 +6,6 @@ function PrivateRoute({ component: Component, ...rest }, props) {
 
     const getToken = async () => {
         let data = await localStorage.getItem("heaserToken");
-        console.log(data);
         setToken(data);
     };
 

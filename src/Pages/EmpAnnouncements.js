@@ -49,7 +49,6 @@ export default function EmpAnnouncements(props) {
         const data = list.filter((obj) => {
             return obj._id === event.currentTarget.id;
         });
-        console.log(data);
         await setHeading(data[0].heading);
         await setDesc(data[0].description);
 

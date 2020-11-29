@@ -65,24 +65,24 @@ export class OrgDashboard extends Component {
             });
         }, 1000);
 
-        let data = await localStorage.getItem("heaserData");
+        let data = localStorage.getItem("heaserData");
         data = JSON.parse(data);
-        if (data) {
-            await axios
-                .get("/employee/get-employees-by-org-id/" + data._id)
-                .then((response) => {
-                    const data = response.data.data.filter(
-                        (item) => item.new === true
-                    );
-                    this.setState({
-                        employees: response.data.data,
-                        new: data,
-                    });
-                })
-                .catch(function (error) {
-                    console.log(error);
+
+        await axios
+            .get("/employee/get-employees-by-org-id/" + data._id)
+            .then((response) => {
+                const data = response.data.data.filter(
+                    (item) => item.new === true
+                );
+                this.setState({
+                    employees: response.data.data,
+                    new: data,
                 });
-        }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
         this.getPosition()
             .then((position) => {
                 this.getWeather(
