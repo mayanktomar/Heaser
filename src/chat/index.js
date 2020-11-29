@@ -1,5 +1,5 @@
 const io = require("socket.io-client");
-const socket = io.connect("http://localhost:8080/", {
+const socket = io.connect("https://heaser-backend.herokuapp.com/", {
     transports: ["websocket", "polling"],
 });
 
