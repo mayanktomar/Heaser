@@ -60,8 +60,8 @@ export class EmployeeLoginModal extends Component {
                     JSON.stringify(result.data.user)
                 );
                 this.setState({ loader: false });
-                this.props.toggleEmpModal();
                 this.props.history.push("/task");
+                this.props.toggleEmpModal();
             })
             .catch((err) => {
                 this.setState({

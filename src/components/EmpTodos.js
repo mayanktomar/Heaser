@@ -47,10 +47,10 @@ export class EmpTodos extends Component {
         };
     }
 
-    componentDidMount = async () => {
-        let userId = localStorage.getItem("userId");
-        let type = localStorage.getItem("heaserType");
-
+    async componentDidMount() {
+        let userId = await localStorage.getItem("userId");
+        let type = await localStorage.getItem("heaserType");
+        console.log(userId);
         if (type === "employee") {
             await axios
                 .get("/task/get-employee-tasks/" + userId)
@@ -87,7 +87,7 @@ export class EmpTodos extends Component {
                 }
             });
         }
-    };
+    }
 
     toggleAllotModal = () => {
         this.setState({

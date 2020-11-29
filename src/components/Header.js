@@ -46,33 +46,40 @@ export class Header extends Component {
     };
 
     markNotificationSeen = async (id) => {
-        await Axios.put(`/notification/mark-notification-seen/${id}`).then(
-            (result) => {
+        await Axios.put(`/notification/mark-notification-seen/${id}`)
+            .then((result) => {
                 const data = [...this.state.data];
                 const idx = data.findIndex((item) => item._id === id);
                 data[idx].seen = true;
                 this.setState({ data: data, count: this.state.count - 1 });
-            }
-        );
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     getOrganizationNotification = async (userId) => {
-        await Axios.get(
-            `/notification/get-organization-notification/${userId}`
-        ).then((result) => {
-            const data = result.data.data.filter((item) => item.seen === false);
-            this.setState({
-                data: result.data.data,
-                count: data.length,
+        await Axios.get(`/notification/get-organization-notification/${userId}`)
+            .then((result) => {
+                const data = result.data.data.filter(
+                    (item) => item.seen === false
+                );
+                this.setState({
+                    data: result.data.data,
+                    count: data.length,
+                });
+            })
+            .catch((err) => {
+                console.log(err);
             });
-        });
     };
 
     async componentDidMount() {
         let data = await localStorage.getItem("heaserType");
         let userId = await localStorage.getItem("userId");
         userId = userId === "null" ? JSON.parse(userId) : userId;
-        if (userId) {
+        console.log(userId);
+        if (userId !== "") {
             if (data == "employee") this.getEmployeeNotification(userId);
             else {
                 this.getOrganizationNotification(userId);
@@ -85,6 +92,7 @@ export class Header extends Component {
     };
 
     logoutHandler = () => {
+        localStorage.setItem("heaserData", null);
         this.context.setData(null);
         localStorage.setItem("heaserToken", null);
         this.context.setToken(null);

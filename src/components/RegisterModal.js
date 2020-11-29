@@ -55,6 +55,7 @@ export class RegisterModal extends Component {
     };
 
     onRegSubmit = () => {
+        this.setState({ loader: true });
         const rolesarray = this.state.rolestring.split(",");
         axios
             .post("org/create-organization", {
@@ -67,8 +68,8 @@ export class RegisterModal extends Component {
                 email: this.state.email,
                 website: this.state.website,
             })
-            .then(function (response) {
-                this.toggleTabs("2");
+            .then((response) => {
+                this.setState({ loader: false, activeTab: "1" });
             })
             .catch(function (error) {
                 console.log(error);
@@ -175,7 +176,7 @@ export class RegisterModal extends Component {
                                             type="text"
                                             name="address"
                                             id="exampleText"
-                                            placeholder="Adress"
+                                            placeholder="Address"
                                             onChange={this.handleRegChange}
                                         />
                                     </FormGroup>

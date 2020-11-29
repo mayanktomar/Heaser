@@ -19,38 +19,6 @@ class NotificationModal extends Component {
         };
     }
 
-    getEmployeeNotification = async (userId) => {
-        Axios.get(`/notification/get-employee-notification/${userId}`).then(
-            (result) => {
-                this.setState({
-                    data: result.data.data,
-                    count: result.data.data.length,
-                });
-            }
-        );
-    };
-
-    getOrganizationNotification = async (userId) => {
-        Axios.get(`/notification/get-organization-notification/${userId}`).then(
-            (result) => {
-                this.setState({
-                    data: result.data.data,
-                    count: result.data.data.length,
-                });
-            }
-        );
-    };
-
-    async componentDidMount() {
-        let data = await localStorage.getItem("heaserType");
-        let userId = await localStorage.getItem("userId");
-        userId = userId === "null" ? JSON.parse(userId) : userId;
-        if (userId) {
-            if (data === "employee") this.getEmployeeNotification(userId);
-            else this.getOrganizationNotification(userId);
-        }
-    }
-
     render() {
         return (
             <Modal
