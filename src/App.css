@@ -131,7 +131,7 @@
 }
 
 .empannounce .card {
-    height: 130px;
+    height: auto;
     margin-top: 5px;
     margin-bottom: 20px;
     display: block;

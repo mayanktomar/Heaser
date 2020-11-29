@@ -58,7 +58,7 @@ export default function EmpAnnouncements(props) {
     const displaylist = list.map((l) => {
         return (
             <Card>
-                <CardBody>
+                <CardBody style={{ padding: "-20px" }}>
                     <CardText>
                         <p>
                             {moment(l.createdAt).format(
@@ -67,7 +67,12 @@ export default function EmpAnnouncements(props) {
                         </p>
 
                         <div className="row">
-                            <div className="col-md-6">{l.heading}</div>
+                            <div
+                                className="col-md-6"
+                                style={{ fontWeight: "bold", color: "#3e98c7" }}
+                            >
+                                {l.heading}
+                            </div>
                             <div className="col-md-6">
                                 <Button
                                     id={l._id}

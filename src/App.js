@@ -111,6 +111,7 @@ function App() {
                         />
                         {token !== null && token !== "null" ? (
                             <Redirect
+                                exact
                                 to={
                                     type === "organization"
                                         ? "/organization"

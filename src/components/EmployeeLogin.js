@@ -1,5 +1,6 @@
 import Axios from "axios";
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import {
     Button,
     Modal,
@@ -25,6 +26,7 @@ export class EmployeeLoginModal extends Component {
             loader: false,
             error: false,
             message: "",
+            loggedIn: false,
         };
     }
 
@@ -37,7 +39,7 @@ export class EmployeeLoginModal extends Component {
         });
     };
 
-    onLogSubmit = (e) => {
+    onLogSubmit = async (e) => {
         e.preventDefault();
         this.setState({ loader: true });
 
@@ -59,8 +61,7 @@ export class EmployeeLoginModal extends Component {
                     "heaserData",
                     JSON.stringify(result.data.user)
                 );
-                this.setState({ loader: false });
-                this.props.history.push("/task");
+                this.setState({ loader: false, loggedIn: true });
                 this.props.toggleEmpModal();
             })
             .catch((err) => {
@@ -73,6 +74,9 @@ export class EmployeeLoginModal extends Component {
     };
 
     render() {
+        if (this.state.loggedIn) {
+            <Redirect to="/task" />;
+        }
         return (
             <div>
                 <Modal

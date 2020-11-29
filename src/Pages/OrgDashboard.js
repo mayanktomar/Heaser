@@ -34,6 +34,7 @@ export class OrgDashboard extends Component {
             errorMessage: undefined,
             loadingweather: true,
             new: [],
+            announcement: [],
         };
     }
     getPosition = () => {
@@ -78,6 +79,14 @@ export class OrgDashboard extends Component {
                         employees: response.data.data,
                         new: data,
                     });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            await axios
+                .get(`/announcement/get-announcements-by-org/${data._id}`)
+                .then((response) => {
+                    this.setState({ announcement: response.data.data });
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -234,7 +243,9 @@ export class OrgDashboard extends Component {
                                         Number of announcements
                                     </CardTitle>
                                     <CardText>
-                                        <h4 style={{ color: "#F64B4E" }}>6</h4>
+                                        <h4 style={{ color: "#F64B4E" }}>
+                                            {this.state.announcement.length}
+                                        </h4>
                                     </CardText>
                                 </CardBody>
                             </Card>

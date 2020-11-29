@@ -187,7 +187,7 @@ export class EmpMain extends Component {
                         </div>
                         <div
                             className="col-md-4"
-                            style={{ paddingTop: 100, paddingBottom: 200 }}
+                            style={{ paddingTop: 20, paddingBottom: 200 }}
                         >
                             <EmpTime {...this.props} />
                         </div>

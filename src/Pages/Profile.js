@@ -50,21 +50,46 @@ export class Profile extends Component {
     }
 
     getUserId = async () => {
-        let data = await localStorage.getItem("userId");
-        Axios.get(`/employee/get-specific-employee/${data}`).then((result) => {
-            this.setState({
-                data: result.data.employee,
-                tags: result.data.employee.tags,
+        console.log(this.props.match.params._id);
+        if (this.props.match.params._id) {
+            Axios.get(
+                `/employee/get-specific-employee/${this.props.match.params.id}`
+            ).then((result) => {
+                this.setState({
+                    data: result.data.employee,
+                    tags: result.data.employee.tags,
+                });
             });
-        });
-        Axios.post(`/time/get-time-in-interval/${data}`, {
-            endDate: moment(new Date()).format("YYYY-MM-DD"),
-            startDate: moment(
-                new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-            ).format("YYYY-MM-DD"),
-        }).then((result) => {
-            this.setState({ times: result.data.data });
-        });
+            Axios.post(
+                `/time/get-time-in-interval/${this.props.match.params.id}`,
+                {
+                    endDate: moment(new Date()).format("YYYY-MM-DD"),
+                    startDate: moment(
+                        new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                    ).format("YYYY-MM-DD"),
+                }
+            ).then((result) => {
+                this.setState({ times: result.data.data });
+            });
+        } else {
+            const userId = localStorage.getItem("userId");
+            Axios.get(`/employee/get-specific-employee/${userId}`).then(
+                (result) => {
+                    this.setState({
+                        data: result.data.employee,
+                        tags: result.data.employee.tags,
+                    });
+                }
+            );
+            Axios.post(`/time/get-time-in-interval/${userId}`, {
+                endDate: moment(new Date()).format("YYYY-MM-DD"),
+                startDate: moment(
+                    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                ).format("YYYY-MM-DD"),
+            }).then((result) => {
+                this.setState({ times: result.data.data });
+            });
+        }
     };
 
     handleDateChange = (date) => {

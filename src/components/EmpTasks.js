@@ -57,8 +57,8 @@ export class EmpTasks extends Component {
         let userId = localStorage.getItem("userId");
         let type = localStorage.getItem("heaserType");
         let data = localStorage.getItem("heaserData");
-        data = JSON.parse(data);
         console.log(type, data);
+        data = JSON.parse(data);
         if (type === "employee") {
             await axios
                 .get("/task/get-employee-tasks/" + userId)

@@ -259,7 +259,7 @@ export default class Chat extends Component {
                             <div class="chat-history">
                                 <ul>
                                     {this.state.chatMessages.map((item) => {
-                                        return item.from._id ===
+                                        return item.from ===
                                             this.context.userId ? (
                                             <li
                                                 class="clearfix"
@@ -278,7 +278,7 @@ export default class Chat extends Component {
                                                     </span>{" "}
                                                     &nbsp; &nbsp;
                                                     <span class="message-data-name">
-                                                        {item.from.name}
+                                                        {item.from}
                                                     </span>{" "}
                                                     <i class="fa fa-circle me"></i>
                                                 </div>
@@ -296,7 +296,7 @@ export default class Chat extends Component {
                                                 <div class="message-data">
                                                     <span class="message-data-name">
                                                         <i class="fa fa-circle online"></i>{" "}
-                                                        {item.from.name}
+                                                        {item.from}
                                                     </span>
                                                     <span class="message-data-time">
                                                         {moment(

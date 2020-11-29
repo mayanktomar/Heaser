@@ -13,8 +13,10 @@ import {
     Label,
 } from "reactstrap";
 import Header from "../components/Header";
+import { AuthContext } from "../Context/auth";
 
 export class WelcomeKit extends Component {
+    static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -27,6 +29,7 @@ export class WelcomeKit extends Component {
             item: "",
             status: "",
             orgid: "",
+            welcomeKit: [],
         };
     }
 
@@ -35,7 +38,7 @@ export class WelcomeKit extends Component {
         data = JSON.parse(data);
 
         axios
-            .get("/employee/get-employees-by-org-id/" + data._id)
+            .get(`/welcome/get-organization-welcome/${data._id}`)
             .then((response) => {
                 this.setState({
                     employees: response.data.data,
@@ -45,10 +48,6 @@ export class WelcomeKit extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-
-        this.setState({
-            orgid: data._id,
-        });
     };
 
     toggleCreateModal = () => {
@@ -70,15 +69,18 @@ export class WelcomeKit extends Component {
             [name]: value,
         });
     };
-    onCreate = async (event) => {
+    onCreate = async () => {
         axios
             .post("/welcome/create-welcome-kit", {
                 employee: this.state.id,
-                organization: this.state.orgid,
+                organization: this.context.userId,
                 status: this.state.status,
                 type: this.state.item,
             })
             .then((response) => {
+                const data = [...this.state.employees];
+                data.push({ ...response.data.data });
+                this.setState({ employees: data });
                 this.toggleCreateModal();
             })
             .catch(function (error) {
@@ -86,13 +88,19 @@ export class WelcomeKit extends Component {
             });
     };
 
-    onUpdate = (event) => {
+    onUpdate = () => {
         axios
-            .put("/welcome/update-welcome-kit/5fc0a578bcb1490017763ff8", {
+            .put(`/welcome/update-welcome-kit/${this.state.id}`, {
                 is_delivered: this.state.status === "Delivered" ? true : false,
                 status: this.state.status,
             })
             .then((response) => {
+                const data = [...this.state.employees];
+                const idx = data.findIndex(
+                    (item) => item._id === this.state.id
+                );
+                data[idx].status = this.state.status;
+                this.setState({ employees: data });
                 this.toggleUpdateModal();
             })
             .catch(function (error) {
@@ -104,7 +112,7 @@ export class WelcomeKit extends Component {
             return (
                 <div>
                     <div className="row" style={{ margin: "0px" }}>
-                        <div className="col-md-4">
+                        <div className="col-md-2">
                             <p
                                 style={{
                                     color: "#1976d2",
@@ -116,22 +124,25 @@ export class WelcomeKit extends Component {
                                     );
                                 }}
                             >
-                                {e.name}
+                                {e.employee.name}
                             </p>
                         </div>
                         <div className="col-md-2">
-                            <p>{e.tags.length > 0 ? e.tags[0] : "N/A"}</p>
+                            <p>{e.status}</p>
+                        </div>
+                        <div className="col-md-2">
+                            <p>{e.type}</p>
                         </div>
                         <div className="col-md-3">
                             <Button
-                                id={e._id}
+                                id={e.employee._id}
                                 style={{
                                     backgroundColor: "#1976d2",
                                     color: "white",
                                 }}
                                 onClick={async () => {
                                     await this.setState({
-                                        id: e._id,
+                                        id: e.employee._id,
                                     });
                                     this.toggleCreateModal();
                                 }}
@@ -214,7 +225,7 @@ export class WelcomeKit extends Component {
                             </Form>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="primary" onClick={this.onUpdate}>
+                            <Button color="primary" onClick={this.onCreate}>
                                 Submit
                             </Button>{" "}
                         </ModalFooter>
@@ -255,11 +266,14 @@ export class WelcomeKit extends Component {
 
                     <h2>Onboarding Portal</h2>
                     <div className="row" style={{ margin: "0px" }}>
-                        <div className="col-md-4">
+                        <div className="col-md-2">
                             <p style={{ fontWeight: "bold" }}>Name</p>
                         </div>
                         <div className="col-md-2">
-                            <p style={{ fontWeight: "bold" }}>Department</p>
+                            <p style={{ fontWeight: "bold" }}>Item</p>
+                        </div>
+                        <div className="col-md-2">
+                            <p style={{ fontWeight: "bold" }}>Status</p>
                         </div>
                     </div>
                     {display}

@@ -80,8 +80,9 @@ export class Header extends Component {
         userId = userId === "null" ? JSON.parse(userId) : userId;
         console.log(userId);
         if (userId !== "") {
-            if (data == "employee") this.getEmployeeNotification(userId);
-            else {
+            if (data === "employee") {
+                this.getEmployeeNotification(userId);
+            } else {
                 this.getOrganizationNotification(userId);
             }
         }
