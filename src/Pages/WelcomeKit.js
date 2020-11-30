@@ -30,12 +30,24 @@ export class WelcomeKit extends Component {
             status: "",
             orgid: "",
             welcomeKit: [],
+            employeesN: [],
         };
     }
 
     componentDidMount = () => {
         let data = localStorage.getItem("heaserData");
         data = JSON.parse(data);
+
+        axios
+            .get("/employee/get-employees-by-org-id/" + data._id)
+            .then((response) => {
+                this.setState({
+                    employeesN: response.data.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
 
         axios
             .get(`/welcome/get-organization-welcome/${data._id}`)
@@ -70,16 +82,22 @@ export class WelcomeKit extends Component {
         });
     };
     onCreate = async () => {
-        axios
+        const data = this.state.employeesN.filter((obj) => {
+            return obj.name === this.state.empname;
+        });
+        await axios
             .post("/welcome/create-welcome-kit", {
-                employee: this.state.id,
+                employee: data[0]._id,
                 organization: this.context.userId,
                 status: this.state.status,
                 type: this.state.item,
             })
             .then((response) => {
                 const data = [...this.state.employees];
-                data.push({ ...response.data.data });
+                data.push({
+                    ...response.data.data,
+                    employee: response.data.employee,
+                });
                 this.setState({ employees: data });
                 this.toggleCreateModal();
             })
@@ -133,23 +151,6 @@ export class WelcomeKit extends Component {
                         <div className="col-md-2">
                             <p>{e.type}</p>
                         </div>
-                        <div className="col-md-3">
-                            <Button
-                                id={e.employee._id}
-                                style={{
-                                    backgroundColor: "#1976d2",
-                                    color: "white",
-                                }}
-                                onClick={async () => {
-                                    await this.setState({
-                                        id: e.employee._id,
-                                    });
-                                    this.toggleCreateModal();
-                                }}
-                            >
-                                Create
-                            </Button>
-                        </div>
 
                         <div className="col-md-3">
                             <Button
@@ -186,9 +187,13 @@ export class WelcomeKit extends Component {
                 displaycheck
             );
 
+        const dropdownoptions = this.state.employeesN.map((e) => {
+            return <option>{e.name}</option>;
+        });
+
         return (
             <>
-                <Header />
+                <Header {...this.props} />
                 <div className="container empview">
                     <Modal
                         isOpen={this.state.isCreateModalOpen}
@@ -200,6 +205,25 @@ export class WelcomeKit extends Component {
 
                         <ModalBody>
                             <Form>
+                                <FormGroup>
+                                    <Label for="exampleSelect">
+                                        Employee name
+                                    </Label>
+                                    <Input
+                                        type="select"
+                                        name="empname"
+                                        id="exampleSelect"
+                                        onChange={this.handleInputChange}
+                                    >
+                                        {/* <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option> */}
+                                        <option>-</option>
+                                        {dropdownoptions}
+                                    </Input>
+                                </FormGroup>
                                 <FormGroup>
                                     <Label>Item</Label>
                                     <Input
@@ -265,6 +289,20 @@ export class WelcomeKit extends Component {
                     </Modal>
 
                     <h2>Onboarding Portal</h2>
+                    <Button
+                        style={{
+                            backgroundColor: "#1976d2",
+                            color: "white",
+                            display: "block",
+                            margin: "auto",
+                            marginTop: 20,
+                        }}
+                        onClick={async () => {
+                            this.toggleCreateModal();
+                        }}
+                    >
+                        Create
+                    </Button>
                     <div className="row" style={{ margin: "0px" }}>
                         <div className="col-md-2">
                             <p style={{ fontWeight: "bold" }}>Name</p>
